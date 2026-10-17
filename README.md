@@ -75,6 +75,56 @@ Built and tested in Claude Code. Other agents should work since it's a plain
 **ChatGPT, claude.ai or any chat app:** paste
 [`skills/loot/SKILL.md`](skills/loot/SKILL.md) and say "run loot on this conversation".
 
+## Your first loot
+
+The output below is an illustrative example; yours will differ.
+
+**1. Work as usual.** Build the thing, fix the bug, argue with the agent until
+the output is right. loot needs nothing from you during the session.
+
+**2. Type `/loot` when you're done.** It reads the session, searches for what
+already exists, and shows a table:
+
+```
+LOOT: 3 drops
+1. [RARE] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
+   query:  "remotion after effects transitions"
+   search: @remotion/transitions (slides, fades, wipes), one paid template pack; none do these
+   proof:  6 transitions rendered and approved in this session
+   edge:   not measured, so not Epic → gist + short post
+2. [COMMON] ffmpeg two-pass trick: documented in the ffmpeg wiki → LOOT.md
+3. [COMMON] custom font loader: only useful in this project → LOOT.md
+Ship which? (numbers, "all", or "none")
+```
+
+Read the evidence lines, not just the label. If the search missed something or
+the proof is thin, say so and it re-rates.
+
+**3. Most of it is Common, and that's the point.** Every run is saved to
+`LOOT.md` in your project, so the trick you found at 2 AM is still there next
+month. Answer `none` and you're done.
+
+**4. Ship the rare one.** Answer `1`. loot builds it in a new folder (clean
+code, README, logo, tests), scans it for secrets, then stops and shows you a
+manifest:
+
+```
+Will publish:
+  github.com/you/remotion-ae-transitions   public, 9 files, secret scan clean
+  gist: "ae-style transitions for Remotion"  public
+  posts/remotion-ae-transitions.md          draft, not posted
+Go ahead? (yes / change something / no)
+```
+
+Nothing leaves your machine until you say `yes`.
+
+**5. Come back to it.**
+
+- Forgot to loot a session? `/loot --list`, then `/loot <file>` from the list.
+- Every week or two: `/loot review`. Drops that keep coming back, or that
+  gained proof since, get re-rated.
+- Want a nudge? Turn on the [end-of-session reminder](#end-of-session-reminder-optional).
+
 ## Use
 
 ```
