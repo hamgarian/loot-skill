@@ -19,14 +19,16 @@ and it dies in the chat log. No repo, no docs, no post. Worth zero.
 4. **Checks** for secrets and private data, then shows you exactly what will go public.
 5. **Ships** it only after you say yes.
 
+The real table from the session that built this repo ([LOOT.md](LOOT.md)):
+
 ```
-LOOT: 3 drops
-1. [EPIC] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
-   proof: 6 transitions rendered, user approved each one
-   exists? closest is X (paid, no source) → repo + skill + post
-2. [RARE] ffmpeg two-pass trick: halves export size with no visible loss
-   exists? known but scattered → gist + short post
-3. [COMMON] custom font loader for this project → LOOT.md
+LOOT: 4 drops
+1. [EPIC] loot-skill: an agent skill that finds and ships the valuable parts of AI sessions
+   exists? no agent skill found doing scan → rate → publish → repo + skill + post + demo
+2. [RARE] scan.mjs: zero-dependency secret scanner that never prints the secret
+   exists? gitleaks does far more; this only wins on "no install" → bundled in the repo
+3. [RARE] naming a dev tool: hatch → afterchat → sidequest → loot → a section of the post
+4. [COMMON] scratch preview server for checking the logo → LOOT.md
 Ship which? (numbers, "all", or "none")
 ```
 
@@ -50,11 +52,14 @@ Most drops are Common. loot says so.
 /plugin install loot@loot-skill
 ```
 
-**Codex, Cursor, Gemini CLI, and other agents that read `SKILL.md`**
+**Other agents that support [Agent Skills](https://github.com/vercel-labs/skills)** (Codex, Cursor, Gemini CLI, …)
 
 ```bash
 npx skills add hamgarian/loot-skill
 ```
+
+Built and tested in Claude Code. Other agents should work since it's a plain
+`SKILL.md`; if one doesn't, please open an issue.
 
 **ChatGPT, claude.ai or any chat app:** paste
 [`skills/loot/SKILL.md`](skills/loot/SKILL.md) and say "run loot on this conversation".
@@ -75,7 +80,8 @@ loot asks for capabilities, not specific tools, and always has a fallback.
 
 | Need | Best | Always works |
 |---|---|---|
-| Logo / cover image | Codex or Antigravity image generation, an image MCP | hand-written SVG |
+| Logo / cover image | your agent's image generation or an image MCP | hand-written SVG |
+| Secret scan | [gitleaks](https://github.com/gitleaks/gitleaks), including git history | bundled `scan.mjs` |
 | Demo video | [Remotion](https://www.remotion.dev) | screenshots + GIF |
 | "Does this exist?" | web search | marked "not checked" |
 | Publish repo | `gh` CLI | the commands, printed for you |
@@ -86,7 +92,8 @@ loot asks for capabilities, not specific tools, and always has a fallback.
 - Publish anything before you approve the exact list of what goes where.
 - Ask for, type or store your passwords or API keys.
 - Publish secrets: every folder goes through the bundled scanner
-  ([`scan.mjs`](skills/loot/scripts/scan.mjs), zero dependencies) first.
+  ([`scan.mjs`](skills/loot/scripts/scan.mjs), zero dependencies) and gitleaks
+  when you have it. Old git history is never pushed unless gitleaks scanned it.
 - Publish client or employer work, or relicense code you didn't write.
 - Post to social media. Launch posts are drafts; you post them.
 - Invent benchmarks, users or star counts.
@@ -107,6 +114,14 @@ skills/loot/
 
 This repo is loot's first drop: it was built in one Claude Code session and then
 looted with itself. The write-up is in [`posts/`](posts/).
+
+## Limits
+
+- loot sees the current session. In a very long session whose start was
+  summarized, early discoveries can be missed; loot says so when it happens.
+- The bundled scanner is a safety net (known key formats, `.env` files,
+  passwords in URLs), not a full audit. Install gitleaks for the real thing.
+- Ratings are the agent's judgment. Treat them as a second opinion.
 
 ## License
 
