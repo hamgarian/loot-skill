@@ -88,20 +88,26 @@ happens away from the conversation.
 candidates and their evidence, never the conversation, with this brief:
 "Rate each item against the bar below. Argue for Common first and raise an
 item only when its evidence meets the bar. When unsure, rate lower. Use only
-the evidence given; never add or assume any." If you
+the evidence given; never add or assume any. For any item one requirement
+short of the next tier, name the cheapest evidence that would raise it." If you
 can't, write the strongest case that each item is Common before rating it.
 
 | Rarity | Needs all of | Forms |
 |---|---|---|
 | **Common** | anything below Rare | a line in `LOOT.md` |
-| **Rare** | a real query; a search that found nothing equivalent, cited; proof it works | gist, short post, or a small repo or skill |
+| **Rare** | a real query; a cited search that found nothing equivalent, **or** a measured edge over the closest result; proof it works | gist, short post, or a small repo or skill |
 | **Epic** | Rare, plus a measured edge over a named alternative, and it runs from a clean clone | repo or skill, post, demo, launch drafts |
 
 Hard rules:
 
 - "not checked" or "no proof" means Common, however good it feels.
-- Something equivalent exists: Common, unless the edge is measured.
+- Something equivalent exists and the edge isn't measured: Common. An edge
+  argued from other projects' READMEs is not measured.
 - Ties round down.
+- **Near misses get a next step.** An item one requirement short of the next
+  tier is labelled `[COMMON, near Rare]` or `[RARE, near Epic]` and gets a
+  `next:` line: the cheapest evidence that would raise it, and roughly how
+  long it takes. That turns a "no" into a to-do the user can choose.
 - Expect nearly everything to be Common. If more than one item in a session
   rates above Common, say why this session is the exception.
 - Common is not a failure. It is the journal entry that keeps the work from
@@ -111,11 +117,12 @@ Show the loot table, with the evidence for anything above Common, and stop:
 
 ```
 LOOT: 3 drops
-1. [RARE] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
+1. [RARE, near Epic] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
    query: "remotion after effects transitions"
    search: @remotion/transitions (slides, fades, wipes), one paid template pack; none do these
    proof: 6 transitions rendered and approved in the session
    edge: not measured, so not Epic → gist + short post
+   next: render the same 3 shots with @remotion/transitions and compare; then a clean-clone run (~45 min)
 2. [COMMON] ffmpeg two-pass trick: documented in the ffmpeg wiki → LOOT.md
 3. [COMMON] custom font loader: only useful in this project → LOOT.md
 Ship which? (numbers, "all", or "none")

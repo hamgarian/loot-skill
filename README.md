@@ -27,11 +27,13 @@ and it dies in the chat log.
 | Rarity | Needs all of | What you get |
 |---|---|---|
 | **Common** | anything below Rare | a line in `LOOT.md`, so it isn't lost |
-| **Rare** | a real search query; a search that found nothing equivalent, with links; proof it works | gist, short post, or a small repo or skill |
+| **Rare** | a real search query; a search that found nothing equivalent (with links), or a measured edge over the closest result; proof it works | gist, short post, or a small repo or skill |
 | **Epic** | Rare, plus a measured edge over a named alternative, and it runs from a clean clone | repo or skill, post, demo, launch drafts |
 
 "Not checked" or "no proof" means Common. Ties round down. Anything rated
-above Common shows its evidence, so you can disagree.
+above Common shows its evidence, so you can disagree. A near miss
+(`[COMMON, near Rare]`) comes with a `next:` line: the cheapest evidence that
+would raise it and roughly how long it takes.
 
 ### loot rates itself Common
 
@@ -87,11 +89,12 @@ already exists, and shows a table:
 
 ```
 LOOT: 3 drops
-1. [RARE] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
+1. [RARE, near Epic] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
    query:  "remotion after effects transitions"
    search: @remotion/transitions (slides, fades, wipes), one paid template pack; none do these
    proof:  6 transitions rendered and approved in this session
    edge:   not measured, so not Epic → gist + short post
+   next:   render the same 3 shots with @remotion/transitions and compare (~45 min)
 2. [COMMON] ffmpeg two-pass trick: documented in the ffmpeg wiki → LOOT.md
 3. [COMMON] custom font loader: only useful in this project → LOOT.md
 Ship which? (numbers, "all", or "none")
