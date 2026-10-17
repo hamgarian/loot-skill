@@ -6,6 +6,10 @@ canonical_url: https://github.com/hamgarian/loot-skill/blob/main/posts/loot.md
 
 ![loot scanning a session and listing its drops by rarity](https://raw.githubusercontent.com/hamgarian/loot-skill/main/assets/demo.gif)
 
+*Update: the first feedback showed the rating step was flattering me. It's
+been rebuilt around evidence, and loot now rates itself Common. See
+[The filter was flattering me](#the-filter-was-flattering-me).*
+
 You know the feeling. You're in a session with Claude or Codex, and somewhere
 along the way you find something actually good: a trick that makes a framework
 way faster, or a pile of corrections that finally gets the AI to make
@@ -22,8 +26,10 @@ than you could ever follow up on. And the follow-up is the boring part: cut the
 code out of your project, write a README, make a logo, write the post, record a
 demo. So it never happens.
 
-But something on GitHub with decent docs is worth more than something perfect
-in a chat log. A repo can get found, used, starred and linked. A chat log can't.
+Most of what you find doesn't need a repo. It needs to be written down
+somewhere better than a chat log. And the rare piece that does deserve a repo
+is worth far more on GitHub, where it can be found and used, than in your
+history.
 
 ## What it does
 
@@ -33,15 +39,14 @@ That last one is underrated. If you spent an hour correcting Claude until its
 Remotion edits looked right, those corrections *are* a skill. loot turns them
 into a `SKILL.md` someone else can install.
 
-Each drop gets a rarity, after loot checks whether it already exists:
+Everything goes into `LOOT.md`, a running journal of what you figured out.
+Then each drop gets a rarity, and the bar is evidence:
 
-- **Common**: useful to you, not to strangers. It goes in `LOOT.md` so it isn't lost.
-- **Rare**: small and reusable. Gist or short post.
-- **Epic**: solves a common problem better than what's out there. Repo or skill, plus post.
-- **Legendary**: new, with proof. Repo, post, demo video, launch drafts.
-
-The rarity labels are a bit of a joke, but they do a real job: they force an
-honest verdict. Most drops are Common, and loot says so.
+- **Common**: everything that doesn't clear the bar below. A line in `LOOT.md`.
+- **Rare**: a real search query, a search that found nothing equivalent (with
+  links), and proof it works. Gist, short post, or a small repo.
+- **Epic**: Rare, plus a measured edge over a named alternative. Repo or skill,
+  post, demo.
 
 You pick what to ship. loot then builds each one as a standalone thing: clean
 folder, README, logo, license, tests, name and tagline. Then it checks.
@@ -86,11 +91,43 @@ ships:
 
 ## I ran it on itself
 
-The session that built loot was the first thing it looted. It found four drops:
-the skill itself (Epic), the secret scanner (Rare, kept inside the repo since
-gitleaks already exists), this naming story (Rare, now a section of this post),
-and a throwaway preview server (Common). The demo at the top was rendered with
-Remotion in that same session.
+The session that built loot was the first thing it looted. It found four drops
+and rated them: the skill itself Epic, the secret scanner Rare, this naming
+story Rare, and a throwaway preview server Common.
+
+## The filter was flattering me
+
+The first real feedback took that table apart. Three of four drops above
+Common, in a system whose whole pitch is "most drops are Common." A naming
+brainstorm rated Rare. A regex key checker rated Rare. As the reviewer put
+it, the filter wasn't filtering, it was flattering.
+
+They were right about why, too. The agent rating your work is the one that
+just spent the evening helping you build it. It can't tell what's new to the
+world, and it leans toward telling you what you want to hear. Rarity colors
+make it worse: an "Epic" label makes you want to publish.
+
+So the rating step changed:
+
+- **Evidence instead of judgment.** Each tier is a checklist: the search query
+  a stranger would type, that search actually run with results cited, proof
+  it works, and for Epic a measured edge over a named alternative.
+- **Can't check it, can't rate it.** "Not checked" or "no proof" means Common.
+- **Someone else judges.** In Claude Code the rating goes to a subagent that
+  sees only the evidence, never the conversation, and has to argue for Common
+  first.
+- **Expect Common.** Ties round down. More than one drop above Common in a
+  session needs an explanation.
+
+Then I re-ran the existence check on loot itself, searching for what it
+*does* instead of whether its name was free. It found logex,
+work-to-blog-publisher, mentor, retro-skill and a few others doing parts of
+the same job. loot's differences are real, but nothing is measured. Under its
+own rules, **loot rates itself Common**. All four drops are Common now.
+
+It's already public, so it stays public, and the README links the similar
+tools. But that's the version of loot I'd actually trust: one that tells its
+own author no.
 
 ## Try it
 

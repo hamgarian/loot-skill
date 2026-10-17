@@ -2,17 +2,17 @@ import type { CSSProperties, ReactNode } from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 
 export const GOLD = '#F2B705';
-export const RARITY = { COMMON: '#9DA5B4', RARE: '#4C9AFF', EPIC: '#B474FF', LEGENDARY: GOLD } as const;
+export const RARITY = { COMMON: '#9DA5B4', RARE: '#4C9AFF', EPIC: '#B474FF' } as const;
 type Rarity = keyof typeof RARITY;
 
-// The drops loot found when it was run on the session that built it.
+// The drops loot found in the session that built it, re-rated under the evidence rules.
 const DROPS: { rarity: Rarity; name: string; what: string; forms: string }[] = [
-  { rarity: 'EPIC', name: 'loot-skill', what: 'ships what sessions find', forms: 'repo, post, demo' },
-  { rarity: 'RARE', name: 'scan.mjs', what: 'zero-dependency secret scanner', forms: 'bundled in repo' },
-  { rarity: 'RARE', name: 'naming a dev tool', what: 'hatch → sidequest → loot', forms: 'post section' },
-  { rarity: 'COMMON', name: 'preview server', what: '10-line static server', forms: 'LOOT.md' },
+  { rarity: 'COMMON', name: 'loot-skill', what: '6 similar tools, edge unmeasured', forms: 'LOOT.md' },
+  { rarity: 'COMMON', name: 'scan.mjs', what: 'gitleaks does far more', forms: 'LOOT.md' },
+  { rarity: 'COMMON', name: 'naming story', what: 'only interesting to us', forms: 'LOOT.md' },
+  { rarity: 'COMMON', name: 'preview server', what: 'throwaway', forms: 'LOOT.md' },
 ];
-const SHIPPED = ['repo   github.com/hamgarian/loot-skill', 'post   posts/loot.md', 'demo   assets/demo.gif'];
+const DONE = ['4 drops saved to LOOT.md', 'evidence cited for every rating'];
 
 const mono: CSSProperties = { fontFamily: 'Consolas, "JetBrains Mono", Menlo, monospace', fontSize: 20, lineHeight: 1.55 };
 
@@ -53,8 +53,8 @@ export const Loot = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const ROWS = 92;
-  const ASK = ROWS + DROPS.length * 22 + 10;
-  const SHIP = ASK + 40;
+  const VERDICT = ROWS + DROPS.length * 22 + 10;
+  const SAVED = VERDICT + 40;
   const END = 360;
 
   const termOut = interpolate(frame, [END, END + 12], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
@@ -87,7 +87,7 @@ export const Loot = () => {
             <Typed text="/loot" at={10} frame={frame} />
           </div>
           <Line at={40} frame={frame}>
-            <span style={{ color: '#7d8590' }}>scanning session… checking what already exists…</span>
+            <span style={{ color: '#7d8590' }}>scanning session… searching for what already exists…</span>
           </Line>
           <Line at={70} frame={frame}>
             <b>LOOT: {DROPS.length} drops</b>
@@ -115,12 +115,11 @@ export const Loot = () => {
               </div>
             );
           })}
-          <div style={{ marginTop: 8, opacity: fadeIn(frame, ASK) }}>
-            Ship which? <span style={{ color: GOLD }}>&gt; </span>
-            <Typed text="1" at={ASK + 10} frame={frame} />
+          <div style={{ marginTop: 8, opacity: fadeIn(frame, VERDICT) }}>
+            Nothing above Common. <span style={{ color: GOLD }}>Nothing to ship.</span>
           </div>
-          {SHIPPED.map((s, i) => (
-            <Line key={s} at={SHIP + i * 16} frame={frame}>
+          {DONE.map((s, i) => (
+            <Line key={s} at={SAVED + i * 16} frame={frame}>
               <span style={{ color: '#3fb950' }}>✓ </span>
               {s}
             </Line>

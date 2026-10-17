@@ -18,3 +18,26 @@ LOOT: 4 drops
 ```
 
 Shipped: #1, with #2 inside it and #3 in the post.
+
+## 2026-10-18: re-rated under the evidence rules
+
+The table above was the agent grading its own homework: 3 of 4 drops above
+Common, including a naming brainstorm. Feedback called it flattering, and it
+was. Re-rated with a real "does this exist?" search (for what loot does, not
+for its name):
+
+```
+LOOT: 4 drops
+1. [COMMON] loot-skill: an agent skill that finds and ships the valuable parts of AI sessions
+   query: "claude code session to blog post / repo / skill"
+   search: logex, work-to-blog-publisher, insight-capture, mentor, retro-skill,
+           learning-loop-skill, SpecStory (links in README)
+   proof: scanner tests pass; the skill itself has not been run in a fresh session
+   edge: rating filter, secret gate, several forms in one pass; not measured
+2. [COMMON] scan.mjs: gitleaks and trufflehog do far more
+3. [COMMON] naming a dev tool: color for the post, not useful to strangers
+4. [COMMON] scratch preview server: throwaway
+Nothing above Common.
+```
+
+Already public, so it stays public. Re-rate after real use.
