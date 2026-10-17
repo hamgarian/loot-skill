@@ -62,12 +62,12 @@ X and Reddit are written for you but never posted.
 
 ## It uses whatever your agent can do
 
-Claude is the main target, but loot is just a `SKILL.md`, so it also works in
-Codex, Cursor, Gemini CLI and anything else that reads the format. Paste it
-into ChatGPT and it works there too.
+I built and tested it in Claude Code, but loot is just a `SKILL.md`, so it
+should work in Codex, Cursor, Gemini CLI and anything else that reads the
+format. You can even paste it into a chat app.
 
-It asks for capabilities, not tools. If your agent can generate images (Codex,
-Antigravity), you get a generated logo. If not, Claude writes an SVG. If Node is
+It asks for capabilities, not tools. If your agent can generate images, you
+get a generated logo. If not, Claude writes an SVG. If Node is
 around, you get a Remotion demo video. If not, screenshots.
 
 ## Naming it took four tries
