@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { scan } from '../skills/loot/scripts/scan.mjs';
 
 // Fake secrets are built from pieces so this file never trips the scanner itself.
@@ -19,7 +20,7 @@ test('finds secrets, skips safe files and allowed lines', () => {
   mkdirSync(join(dir, 'node_modules'));
   writeFileSync(join(dir, 'node_modules', 'dep.js'), `"${GH}"\n`);
   mkdirSync(join(dir, 'sub'));
-  writeFileSync(join(dir, 'sub', 'db.txt'), 'postgres://admin:hunter22@db.internal/app\n');
+  writeFileSync(join(dir, 'sub', 'db.txt'), 'postgres://admin:' + 'hunter22@db.internal/app\n');
 
   const found = scan(dir).map((f) => `${f.file}:${f.line}:${f.kind}`).sort();
   assert.deepEqual(found, [
@@ -29,6 +30,6 @@ test('finds secrets, skips safe files and allowed lines', () => {
   ]);
 });
 
-test('the published skill folder is clean', () => {
-  assert.deepEqual(scan(new URL('../', import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1')), []);
+test('this repo itself is clean', () => {
+  assert.deepEqual(scan(fileURLToPath(new URL('../', import.meta.url))), []);
 });
