@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="loot">
+  <mask id="keyhole">
+    <rect width="64" height="64" fill="#fff"/>
+    <path d="M32 26.5a2.5 2.5 0 0 0-1.25 4.67V34h2.5v-2.83A2.5 2.5 0 0 0 32 26.5z" fill="#000"/>
+  </mask>
+  <g fill="#F2B705" mask="url(#keyhole)">
+    <path d="M8 27v-3c0-6.6 5.4-12 12-12h24c6.6 0 12 5.4 12 12v3z"/>
+    <path d="M8 30h48v22a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z"/>
+    <rect x="25" y="22" width="14" height="16" rx="2.5"/>
+    <path d="M55 1l1.5 4.5L61 7l-4.5 1.5L55 13l-1.5-4.5L49 7l4.5-1.5z"/>
+  </g>
+</svg>

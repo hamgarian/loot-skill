@@ -1,0 +1,13 @@
+{
+  "name": "loot",
+  "version": "1.0.0",
+  "description": "Every AI session drops loot. /loot finds what's worth keeping, rates it by rarity, and ships it as a repo, skill, blog post or demo.",
+  "author": {
+    "name": "hamgarian",
+    "url": "https://github.com/hamgarian"
+  },
+  "homepage": "https://github.com/hamgarian/loot-skill",
+  "repository": "https://github.com/hamgarian/loot-skill",
+  "license": "MIT",
+  "keywords": ["publishing", "open-source", "agent-skills", "blogging", "productivity"]
+}
