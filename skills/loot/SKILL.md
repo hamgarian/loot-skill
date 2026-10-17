@@ -15,8 +15,11 @@ license: MIT
 # loot
 
 Every session drops loot. Most of it dies in the chat log. Your job: find it,
-judge it honestly, finish the parts worth finishing, and ship them only after
-the user says yes.
+write it all down, judge it on evidence instead of enthusiasm, and ship only
+the rare piece that earns it, after the user says yes.
+
+Most of loot's value is `LOOT.md`: a running record of everything the user
+figured out. Publishing is the exception.
 
 Loot is **any valuable part** of the session, not only side discoveries:
 
@@ -47,27 +50,52 @@ from the session in the table.
 
 ## 2. Rate
 
-Check whether each item already exists: search the web, GitHub and npm/PyPI
-when you can. If you cannot search, say "not checked". Then give it a rarity.
-Be honest; most drops are Common.
+The rating is a filter, and its job is to say no. You are a bad judge of work
+you just helped make: you can't tell what is new to the world, and you lean
+toward flattering the user. So rarity comes from evidence, and the judging
+happens away from the conversation.
 
-| Rarity | Bar | Default forms |
+**Collect evidence** for each candidate:
+
+- **query**: what a stranger with this problem would type into a search box
+- **search**: run it (web, GitHub, npm/PyPI) and list the closest results with
+  links. Search for what it *does*, not for its name. No search tool: "not checked".
+- **proof**: a test, benchmark or before/after from the session, or "none"
+- **edge**: what it does that the closest result doesn't, measured if possible
+
+**Rate it somewhere else.** If you can start a subagent, give it only the
+candidates and their evidence, never the conversation, with this brief:
+"Rate each item against the bar below. Argue for Common first and raise an
+item only when its evidence meets the bar. When unsure, rate lower." If you
+can't, write the strongest case that each item is Common before rating it.
+
+| Rarity | Needs all of | Forms |
 |---|---|---|
-| **Common** | useful to this user, not to strangers | a line in `LOOT.md` |
-| **Rare** | reusable and small, others hit this problem | gist or short post |
-| **Epic** | solves a common problem better than what exists | repo or skill, plus post |
-| **Legendary** | new or clearly better, with proof | repo or skill, post, demo video, launch posts |
+| **Common** | anything below Rare | a line in `LOOT.md` |
+| **Rare** | a real query; a search that found nothing equivalent, cited; proof it works | gist, short post, or a small repo or skill |
+| **Epic** | Rare, plus a measured edge over a named alternative, and it runs from a clean clone | repo or skill, post, demo, launch drafts |
 
-Show the loot table and stop:
+Hard rules:
+
+- "not checked" or "no proof" means Common, however good it feels.
+- Something equivalent exists: Common, unless the edge is measured.
+- Ties round down.
+- Expect nearly everything to be Common. If more than one item in a session
+  rates above Common, say why this session is the exception.
+- Common is not a failure. It is the journal entry that keeps the work from
+  being lost.
+
+Show the loot table, with the evidence for anything above Common, and stop:
 
 ```
 LOOT: 3 drops
-1. [EPIC] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
-   proof: 6 transitions rendered, user approved each one
-   exists? closest is X (paid, no source) → repo + skill + post
-2. [RARE] ffmpeg two-pass trick: halves export size with no visible loss
-   exists? known but scattered → gist + short post
-3. [COMMON] custom font loader for this project → LOOT.md
+1. [RARE] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
+   query: "remotion after effects transitions"
+   search: @remotion/transitions (slides, fades, wipes), one paid template pack; none do these
+   proof: 6 transitions rendered and approved in the session
+   edge: not measured, so not Epic → gist + short post
+2. [COMMON] ffmpeg two-pass trick: documented in the ffmpeg wiki → LOOT.md
+3. [COMMON] custom font loader: only useful in this project → LOOT.md
 Ship which? (numbers, "all", or "none")
 ```
 
@@ -117,7 +145,8 @@ fall back to handing the user a ready-to-run command or file.
 - Repo: `gh repo create`, description, topics, push.
 - Post: dev.to or Hashnode as a **draft** when a token is already configured;
   otherwise a Markdown file. Medium: Markdown plus import instructions.
-- Launch posts (Show HN, X, Reddit): drafts in the repo. Never post them.
+- Launch posts (Show HN, X, Reddit), Epic only: drafts in a gitignored
+  `launch/` folder. Never post them.
 - Finish with links to everything shipped and anything left for the user.
 
 ## Use what the agent has
@@ -128,7 +157,8 @@ fall back to handing the user a ready-to-run command or file.
 | Secret scan | `gitleaks` (also covers git history) | bundled `scripts/scan.mjs` |
 | Demo video | Remotion (Node) | screenshots + GIF |
 | Screenshots | a browser tool | ask the user for one |
-| "Does it exist?" | web search | mark "not checked" |
+| "Does it exist?" | web search | mark "not checked" (caps it at Common) |
+| Independent rating | a subagent that never sees the conversation | the strongest case for Common, written first |
 | Publish repo | `gh` CLI | print the commands |
 | Publish post | the platform's API with an existing token | Markdown file |
 
