@@ -34,7 +34,9 @@ forms (repo + post + demo).
 
 ## 1. Scan
 
-Read the whole conversation and the files it touched. List candidates. For each
+Read the whole conversation and the files it touched. If earlier parts of the
+conversation were summarized, say so in the table: early discoveries may be
+missing. List candidates. For each
 one, write down what it does and the proof that it works (test, benchmark,
 before/after, the user's reaction).
 
@@ -70,8 +72,8 @@ Ship which? (numbers, "all", or "none")
 ```
 
 Append every table to `LOOT.md` in the project root (create it if missing), so
-Common drops aren't lost. With an argument (`/loot 2`, `/loot all`), skip the
-question for those items.
+Common drops aren't lost. With an argument, skip the question: `/loot 2` ships
+drop 2, `/loot all` ships every drop rated Rare or better.
 
 ## 3. Forge
 
@@ -90,9 +92,15 @@ current repo's history** (default `../<slug>`, or where the user says). Read
 
 ## 4. Check (never skip)
 
-1. Run the secret scanner on every folder you will publish:
-   `node <this skill's folder>/scripts/scan.mjs <folder>`. Fix every finding,
-   or mark a false positive with `loot:allow` on that line and say why.
+1. Scan every folder you will publish for secrets:
+   - always: `node <this skill's folder>/scripts/scan.mjs <folder>`
+   - also, if `gitleaks` is installed: `gitleaks dir <folder>`, and
+     `gitleaks git <folder>` when the folder has git history.
+
+   Fix every finding, or mark a false positive with `loot:allow` on that line
+   and say why. Look at every `warn` line by hand. Never push existing git
+   history that gitleaks hasn't scanned; without gitleaks, publish from a fresh
+   `git init` instead.
 2. Read every file that will be published. Look for personal data, client
    names, internal hostnames, private repo links and code under another license.
 3. Show the user a manifest: each destination (repo name, public or private,
@@ -114,7 +122,8 @@ fall back to handing the user a ready-to-run command or file.
 
 | Need | Best | Fallback that always works |
 |---|---|---|
-| Logo / cover image | your image generation (Codex, Antigravity, an image MCP) | hand-written SVG |
+| Logo / cover image | your own image generation or an image MCP, if you have one | hand-written SVG |
+| Secret scan | `gitleaks` (also covers git history) | bundled `scripts/scan.mjs` |
 | Demo video | Remotion (Node) | screenshots + GIF |
 | Screenshots | a browser tool | ask the user for one |
 | "Does it exist?" | web search | mark "not checked" |
