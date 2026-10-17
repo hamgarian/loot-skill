@@ -12,6 +12,7 @@ Folder layout: keep it flat and boring.
   LICENSE            MIT unless the user says otherwise
   .gitignore
   assets/logo.svg
+  assets/social-preview.png   1280×640, under 1 MB
   src/ or the language's normal layout
   examples/          one runnable example
   tests/             at least one test that proves the main claim
@@ -133,3 +134,7 @@ Drafts in `launch/`, never posted by you:
   what happens when they run it?
 - Logo: one simple shape, 1–2 colors, readable at 16px. SVG with a `viewBox`,
   no text inside the icon. Check it on white and on #0d1117 (GitHub dark).
+- Social preview: 1280×640 PNG, under 1 MB. Logo, name and tagline, centered
+  (other sites crop the edges), tagline on one line. Without it, links to the
+  repo on X, Slack or Discord show a generic card. Render it with your image
+  generation, or as an HTML/Remotion still (`npx remotion still … out.png`).

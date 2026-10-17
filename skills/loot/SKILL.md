@@ -87,6 +87,8 @@ current repo's history** (default `../<slug>`, or where the user says). Read
   `gh search repos <name>`, `npm view <name>` (exit 1 means free).
 - **Tagline.** One line that tells a stranger what it does and for whom.
 - **Logo.** Simple, one or two colors, readable at 16px, works on light and dark.
+- **Social preview.** A 1280×640 card (logo, name, tagline) so shared links
+  show an image instead of a blank GitHub card.
 - **README.** Result first, then quickstart, then how it works.
 - **Proof.** A test, a benchmark, or a before/after. Never invent numbers.
 

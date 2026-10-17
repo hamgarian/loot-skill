@@ -13,6 +13,11 @@ gh repo create <name> --public --source . --push --description "<tagline>"
 gh repo edit --add-topic <topic1> --add-topic <topic2>
 ```
 
+Social preview: GitHub has no API for it. Upload `assets/social-preview.png`
+under Settings → General → Social preview, with a browser tool if the user is
+signed in there; otherwise give them that path and the link
+`https://github.com/<owner>/<name>/settings`.
+
 Use `--private` when the user asked for private. Skill repos: add the topics
 `agent-skills` and `claude-code`.
 
