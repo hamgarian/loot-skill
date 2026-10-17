@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 
 const GOLD = '#F2B705';
 const RARITY = { COMMON: '#9DA5B4', RARE: '#4C9AFF', EPIC: '#B474FF', LEGENDARY: GOLD } as const;
@@ -87,7 +87,7 @@ export const Loot = () => {
             <Typed text="/loot" at={10} frame={frame} />
           </div>
           <Line at={40} frame={frame}>
-            <span style={{ color: '#7d8590' }}>scanning session… 3 builds, 41 messages, 14 files</span>
+            <span style={{ color: '#7d8590' }}>scanning session… checking what already exists…</span>
           </Line>
           <Line at={70} frame={frame}>
             <b>LOOT: {DROPS.length} drops</b>
@@ -138,6 +138,3 @@ export const Loot = () => {
     </AbsoluteFill>
   );
 };
-
-// Keep the easing import used for future tweaks out of the bundle warning.
-void Easing;
