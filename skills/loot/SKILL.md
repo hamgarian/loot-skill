@@ -3,12 +3,12 @@ name: loot
 description: >
   Find everything worth keeping from this AI session (the main build, side
   discoveries, techniques, the feedback the user taught you), rate each by
-  rarity, and turn the ones worth it into finished public work: a GitHub repo
-  with docs and a logo, an agent skill, a blog post, a gist, a demo video. Use
-  when the user says "loot", "/loot", "what's worth shipping from this",
-  "publish this", "turn this into a repo / skill / blog post", or at the end of
-  a productive session.
-argument-hint: "[item name or number | all]"
+  rarity on evidence, save them to LOOT.md, and turn the rare one that earns it
+  into finished public work: a GitHub repo with docs and a logo, an agent
+  skill, a blog post, a gist, a demo video. Also reads past Claude Code and
+  Codex sessions. Use when the user says "loot", "/loot", "what's worth
+  shipping from this", or "turn this into a repo / skill / blog post".
+argument-hint: "[number | all | \"topic\" | review | --list | <session.jsonl>]"
 license: MIT
 ---
 
@@ -35,11 +35,30 @@ Loot is **any valuable part** of the session, not only side discoveries:
 One session often holds several items. A single item often deserves several
 forms (repo + post + demo).
 
+## Modes
+
+| Command | Does |
+|---|---|
+| `/loot` | scan this session, show the table, ask what to ship |
+| `/loot "<topic>"` | look at one thing only (cheaper): "the ffmpeg trick" |
+| `/loot 2`, `/loot all` | ship drop 2, or every drop rated Rare or better, without asking which |
+| `/loot --list` | list recent past sessions to pick from |
+| `/loot <session.jsonl>` | scan a past session instead of this one |
+| `/loot review` | re-rate what's already in `LOOT.md` (see step 6) |
+
 ## 1. Scan
 
-Read the whole conversation and the files it touched. If earlier parts of the
-conversation were summarized, say so in the table: early discoveries may be
-missing. List candidates. For each
+Read the whole conversation and the files it touched. For a past session, or
+when earlier parts of this one were summarized, read the transcript instead:
+
+```
+node <this skill's folder>/scripts/transcript.mjs list          # recent Claude Code + Codex sessions
+node <this skill's folder>/scripts/transcript.mjs read <file>   # condensed text, secrets redacted
+```
+
+This session's own transcript is the newest file in
+`~/.claude/projects/<project>/`. If you couldn't read past a summary, say so in
+the table: early discoveries may be missing. List candidates. For each
 one, write down what it does and the proof that it works (test, benchmark,
 before/after, the user's reaction).
 
@@ -60,13 +79,16 @@ happens away from the conversation.
 - **query**: what a stranger with this problem would type into a search box
 - **search**: run it (web, GitHub, npm/PyPI) and list the closest results with
   links. Search for what it *does*, not for its name. No search tool: "not checked".
-- **proof**: a test, benchmark or before/after from the session, or "none"
+- **proof**: a test, benchmark or before/after that actually happened in the
+  session, with where (the command, the file, the message), or "none". Never
+  reconstruct proof from memory: AI notes invent names, numbers and details.
 - **edge**: what it does that the closest result doesn't, measured if possible
 
 **Rate it somewhere else.** If you can start a subagent, give it only the
 candidates and their evidence, never the conversation, with this brief:
 "Rate each item against the bar below. Argue for Common first and raise an
-item only when its evidence meets the bar. When unsure, rate lower." If you
+item only when its evidence meets the bar. When unsure, rate lower. Use only
+the evidence given; never add or assume any." If you
 can't, write the strongest case that each item is Common before rating it.
 
 | Rarity | Needs all of | Forms |
@@ -99,9 +121,13 @@ LOOT: 3 drops
 Ship which? (numbers, "all", or "none")
 ```
 
-Append every table to `LOOT.md` in the project root (create it if missing), so
-Common drops aren't lost. With an argument, skip the question: `/loot 2` ships
-drop 2, `/loot all` ships every drop rated Rare or better.
+Show at most 7 drops, strongest first. Everything else gets one line under
+"noted".
+
+After showing the table, append it to `LOOT.md` in the project root (create it
+if missing), dated. A drop earns a full entry only if a future session would
+go wrong, or redo real work, without it. Otherwise it's a one-line "noted"
+entry. The journal is only useful if it stays readable.
 
 ## 3. Forge
 
@@ -149,6 +175,19 @@ fall back to handing the user a ready-to-run command or file.
   `launch/` folder. Never post them.
 - Finish with links to everything shipped and anything left for the user.
 
+## 6. Review (`/loot review`)
+
+Ratings from one session are a guess. Evidence builds up over time:
+
+1. Read `LOOT.md`. Group entries that are the same thing seen again (same
+   root idea, even if worded differently).
+2. Re-rate a drop when something changed: it came up in 3 or more sessions,
+   it gained proof (users, a benchmark, someone asked for it), or a new search
+   finds nothing equivalent anymore. Use the same evidence rules and the same
+   outside rater.
+3. Show what moved and why. Write a dated "review" section to `LOOT.md`; never
+   rewrite old entries. Then offer to ship anything that's now Rare or better.
+
 ## Use what the agent has
 
 | Need | Best | Fallback that always works |
@@ -158,6 +197,7 @@ fall back to handing the user a ready-to-run command or file.
 | Demo video | Remotion (Node) | screenshots + GIF |
 | Screenshots | a browser tool | ask the user for one |
 | "Does it exist?" | web search | mark "not checked" (caps it at Common) |
+| Past or summarized sessions | `scripts/transcript.mjs` (Claude Code, Codex) | ask the user to paste or export the conversation |
 | Independent rating | a subagent that never sees the conversation | the strongest case for Common, written first |
 | Publish repo | `gh` CLI | print the commands |
 | Publish post | the platform's API with an existing token | Markdown file |
