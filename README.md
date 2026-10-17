@@ -65,7 +65,8 @@ would have stayed a line in `LOOT.md` until real use proves an edge.
 **Other agents that support [Agent Skills](https://github.com/vercel-labs/skills)** (Codex, Cursor, Gemini CLI, …)
 
 ```bash
-npx skills add hamgarian/loot-skill
+npx skills add hamgarian/loot-skill -g                  # every project
+npx skills add hamgarian/loot-skill -g -a codex         # one specific agent
 ```
 
 Built and tested in Claude Code. Other agents should work since it's a plain
@@ -77,12 +78,26 @@ Built and tested in Claude Code. Other agents should work since it's a plain
 ## Use
 
 ```
-/loot          scan this session and show the loot table
-/loot 2        ship drop #2
-/loot all      ship everything rated Rare or better
+/loot                   scan this session and show the loot table
+/loot "the ffmpeg trick"  look at one thing only
+/loot 2                 ship drop #2
+/loot all               ship everything rated Rare or better
+/loot --list            list your recent Claude Code and Codex sessions
+/loot <session.jsonl>   loot a past session
+/loot review            re-rate LOOT.md: drops that keep coming back or gained proof move up
 ```
 
 Or just say "loot this session" or "what from this is worth shipping?"
+
+### End-of-session reminder (optional)
+
+The Claude Code plugin ships a hook that, once per long session (30+ messages),
+says *"Anything worth keeping? Run /loot."* It never runs loot itself, and it's
+off until you turn it on in `~/.claude/settings.json`:
+
+```json
+{ "env": { "LOOT_REMIND": "1" } }
+```
 
 ## Uses what your agent has
 
@@ -121,7 +136,15 @@ skills/loot/
   references/forge.md   checklists for repo, skill, post, gist, demo, name, logo
   references/ship.md    publish commands and fallbacks
   scripts/scan.mjs      secret scanner (node scan.mjs <folder>)
+  scripts/transcript.mjs  reads past Claude Code and Codex sessions, secrets redacted
+hooks/remind.mjs        optional end-of-session reminder
 ```
+
+Ideas borrowed from the similar tools below: reading past transcripts
+(logex), re-rating the journal over time (retro, learning-loop), a cap on
+how much one run reports (retro), a bar for what's worth writing down and a
+rule against invented evidence (learning-loop), and an opt-in reminder
+instead of auto-running (retro).
 
 This repo was built in one Claude Code session and then looted with itself.
 The write-up is in [`posts/`](posts/).
@@ -144,8 +167,9 @@ post or demo. None of that is measured against these tools yet.
 
 ## Limits
 
-- loot sees the current session. In a very long session whose start was
-  summarized, early discoveries can be missed; loot says so when it happens.
+- Past sessions are read from Claude Code and Codex transcripts only. Other
+  agents: paste or export the conversation. Very long transcripts are cut in
+  the middle (start and end kept), and loot says so.
 - The bundled scanner is a safety net (known key formats, `.env` files,
   passwords in URLs), not a full audit. Install gitleaks for the real thing.
 - Ratings are still an LLM's judgment. The evidence rules and the outside
