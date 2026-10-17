@@ -110,11 +110,11 @@ one-line description. No README needed.
 
 ## Demo video
 
-Only for Epic and Legendary items. 10–30 seconds, no voice, captions on screen:
+Only for Epic items. 10–30 seconds, no voice, captions on screen:
 the problem (2s), the command or action (3–5s), the result (rest). Loop-friendly
 ending. See `ship.md` for the Remotion recipe.
 
-## Launch posts (Legendary)
+## Launch posts (Epic)
 
 Drafts in `launch/`, never posted by you:
 
