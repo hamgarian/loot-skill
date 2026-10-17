@@ -7,14 +7,14 @@ type Rarity = keyof typeof RARITY;
 
 // The drops loot found when it was run on the session that built it.
 const DROPS: { rarity: Rarity; name: string; what: string; forms: string }[] = [
-  { rarity: 'EPIC', name: 'loot-skill', what: 'ships the valuable parts of AI sessions', forms: 'repo + skill + post + demo' },
+  { rarity: 'EPIC', name: 'loot-skill', what: 'ships what sessions find', forms: 'repo, post, demo' },
   { rarity: 'RARE', name: 'scan.mjs', what: 'zero-dependency secret scanner', forms: 'bundled in repo' },
   { rarity: 'RARE', name: 'naming a dev tool', what: 'hatch → sidequest → loot', forms: 'post section' },
   { rarity: 'COMMON', name: 'preview server', what: '10-line static server', forms: 'LOOT.md' },
 ];
 const SHIPPED = ['repo   github.com/hamgarian/loot-skill', 'post   posts/loot.md', 'demo   assets/demo.gif'];
 
-const mono: CSSProperties = { fontFamily: 'Consolas, "JetBrains Mono", Menlo, monospace', fontSize: 21, lineHeight: 1.55 };
+const mono: CSSProperties = { fontFamily: 'Consolas, "JetBrains Mono", Menlo, monospace', fontSize: 20, lineHeight: 1.55 };
 
 const fadeIn = (frame: number, at: number) =>
   interpolate(frame, [at, at + 8], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
