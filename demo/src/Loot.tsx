@@ -1,8 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 
-const GOLD = '#F2B705';
-const RARITY = { COMMON: '#9DA5B4', RARE: '#4C9AFF', EPIC: '#B474FF', LEGENDARY: GOLD } as const;
+export const GOLD = '#F2B705';
+export const RARITY = { COMMON: '#9DA5B4', RARE: '#4C9AFF', EPIC: '#B474FF', LEGENDARY: GOLD } as const;
 type Rarity = keyof typeof RARITY;
 
 // The drops loot found when it was run on the session that built it.
@@ -34,7 +34,7 @@ const Line = ({ at, frame, children }: { at: number; frame: number; children: Re
   <div style={{ opacity: fadeIn(frame, at), transform: `translateY(${(1 - fadeIn(frame, at)) * 6}px)` }}>{children}</div>
 );
 
-const Chest = ({ size }: { size: number }) => (
+export const Chest = ({ size }: { size: number }) => (
   <svg viewBox="0 0 64 64" width={size} height={size}>
     <mask id="kh">
       <rect width="64" height="64" fill="#fff" />
