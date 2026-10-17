@@ -6,7 +6,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const PATTERNS = [
+export const PATTERNS = [
   ['private key', /-----BEGIN [A-Z ]*PRIVATE KEY-----/],
   ['AWS access key', /\bAKIA[0-9A-Z]{16}\b/],
   ['GitHub token', /\bgh[pousr]_[A-Za-z0-9]{36,}|\bgithub_pat_[A-Za-z0-9_]{50,}/],
