@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "loot-skill",
+  "description": "Turn the valuable parts of your AI sessions into shipped repos, skills and posts.",
+  "owner": {
+    "name": "hamgarian",
+    "url": "https://github.com/hamgarian"
+  },
+  "plugins": [
+    {
+      "name": "loot",
+      "description": "Find what's worth keeping from a session, rate it by rarity, ship it.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
