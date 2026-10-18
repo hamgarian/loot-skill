@@ -219,7 +219,18 @@ written for publication (session-to-post's slop-detector).
 from a real run. Fresh raters that never saw a session scored **13/13** with
 the current rules, agreed with each other on every item, and across all
 eight runs **never rated an item higher than its evidence supported**.
-Earlier misses were near-miss tags, not tiers, and each one led to a rule fix. Details and how to rerun them: [`evals/README.md`](evals/README.md).
+Earlier misses were near-miss tags, not tiers, and each one led to a rule fix.
+
+### Head-to-head with ce-compound
+
+On 4 real past sessions, each with a fake credential planted in it, loot
+captured **37 of 46** things an independent judge said were worth keeping
+(19 of 20 high-importance ones) and leaked nothing. compound-engineering's
+`ce-compound` wrote nothing on any of them, as its own rules say it should:
+it only documents solved bugs that the code doesn't already explain. So loot
+is the better journal; whether it beats ce-compound at documenting a hard repo
+bug fix wasn't tested. Setup, numbers and limits:
+[`evals/head-to-head.md`](evals/head-to-head.md). Details and how to rerun them: [`evals/README.md`](evals/README.md).
 
 This repo was built in one Claude Code session and then looted with itself.
 The write-up is in [`posts/`](posts/).
@@ -240,8 +251,9 @@ Found by running loot's own existence check on itself:
 
 loot's differences: a rating step built to say no, a secret-scan and approval
 gate before anything goes public, and one pass that can produce a repo, skill,
-post or demo. The rating is tested on known cases (above); a side-by-side
-run against these tools on real sessions hasn't been done yet.
+post or demo. The rating is tested on known cases, and loot was run side by
+side with ce-compound on real sessions (above); the other tools haven't been
+compared yet.
 
 ## Limits
 

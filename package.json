@@ -1,6 +1,6 @@
 {
   "name": "loot-skill",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "private": true,
   "description": "Every AI session drops loot. /loot finds it, polishes it, ships it.",
   "type": "module",
