@@ -31,6 +31,7 @@ Loot is **any valuable part** of the session, not only side discoveries:
 | **Know-how** | corrections and feedback the user gave you that made the output good | skill |
 | **Story** | the path from problem to result, dead ends included | post |
 | **Data** | benchmarks, comparisons, measurements | post or repo README |
+| **Decision** | what was chosen over what, and why (tool A over B, approach X dropped) | `LOOT.md`, or the post that explains it |
 
 One session often holds several items. A single item often deserves several
 forms (repo + post + demo).
@@ -162,6 +163,16 @@ Ship which? (numbers, "all", or "none")
 
 Show at most 7 drops, strongest first. Everything else gets one line under
 "noted".
+
+Keep plain Common drops short: the finding itself in a line or two (the fix,
+the cause, the number), plus `home:` if it has one. The query / search /
+proof / edge fields are for near misses and above; on every Common item they
+bury the finding under the paperwork.
+
+Facts in the journal come from the session. Copy numbers, names and commands
+exactly as they appear there; never round or reconstruct them. Anything you
+learned from your own web search goes only on the `search:` line, with its
+link, so a reader can tell the session's facts from the web's.
 
 After showing the table, append it to `LOOT.md` in the project root (create it
 if missing), dated. A drop earns a full entry only if a future session would
