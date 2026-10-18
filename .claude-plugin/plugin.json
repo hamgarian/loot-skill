@@ -1,6 +1,6 @@
 {
   "name": "loot",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Every AI session drops loot. /loot finds what's worth keeping, rates it by rarity, and ships it as a repo, skill, blog post or demo.",
   "author": {
     "name": "hamgarian",
