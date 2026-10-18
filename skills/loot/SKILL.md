@@ -8,7 +8,7 @@ description: >
   skill, a blog post, a gist, a demo video. Also reads past Claude Code and
   Codex sessions. Use when the user says "loot", "/loot", "what's worth
   shipping from this", or "turn this into a repo / skill / blog post".
-argument-hint: "[number | all | \"topic\" | review | --list | <session.jsonl>]"
+argument-hint: "[number | all | \"topic\" | review | --auto | --list | <session file>]"
 license: MIT
 ---
 
@@ -43,8 +43,9 @@ forms (repo + post + demo).
 | `/loot "<topic>"` | look at one thing only (cheaper): "the ffmpeg trick" |
 | `/loot 2`, `/loot all` | ship drop 2, or every drop rated Rare or better, without asking which |
 | `/loot --list` | list recent past sessions to pick from |
-| `/loot <session.jsonl>` | scan a past session instead of this one |
+| `/loot <session file>` | scan a past session instead of this one: a Claude Code or Codex `.jsonl`, or a Markdown/text export from any other agent |
 | `/loot review` | re-rate what's already in `LOOT.md` (see step 6) |
+| `/loot --auto` | unattended: scan, rate, write `LOOT.md`, then stop. Never asks, forges, publishes, or edits any other file. For `claude -p "/loot --auto"` or a scheduled run |
 
 ## 1. Scan
 
@@ -74,6 +75,7 @@ you just helped make: you can't tell what is new to the world, and you lean
 toward flattering the user. So rarity comes from evidence, and the judging
 happens away from the conversation.
 
+<!-- rater:start (evals/build-prompt.mjs reads this section) -->
 **Collect evidence** for each candidate:
 
 - **query**: what a stranger with this problem would type into a search box
@@ -88,8 +90,10 @@ happens away from the conversation.
 candidates and their evidence, never the conversation, with this brief:
 "Rate each item against the bar below. Argue for Common first and raise an
 item only when its evidence meets the bar. When unsure, rate lower. Use only
-the evidence given; never add or assume any. For any item one requirement
-short of the next tier, name the cheapest evidence that would raise it." If you
+the evidence given; never add or assume any. For each item, list which of
+checklist items 1–5 are met, then give the rating those imply. For any item
+one requirement short of the next tier, name the cheapest evidence that would
+raise it." If you
 can't, write the strongest case that each item is Common before rating it.
 
 | Rarity | Needs all of | Forms |
@@ -97,6 +101,18 @@ can't, write the strongest case that each item is Common before rating it.
 | **Common** | anything below Rare | a line in `LOOT.md` |
 | **Rare** | a real query; a cited search that found nothing equivalent, **or** a measured edge over the closest result; proof it works | gist, short post, or a small repo or skill |
 | **Epic** | Rare, plus a measured edge over a named alternative, and it runs from a clean clone | repo or skill, post, demo, launch drafts |
+
+Place each item with this checklist, not a gut call:
+
+1. a real query
+2. a cited search that found nothing equivalent, **or** a measured edge over the closest result
+3. proof it works
+4. a measured edge over a named alternative
+5. it runs from a clean clone
+
+1–3 met: Rare. All 5: Epic. Exactly one missing from the next tier up is a
+near miss (see below). A search for the name only, or no search tool,
+counts as item 2 missing.
 
 Hard rules:
 
@@ -107,11 +123,16 @@ Hard rules:
 - **Near misses get a next step.** An item one requirement short of the next
   tier is labelled `[COMMON, near Rare]` or `[RARE, near Epic]` and gets a
   `next:` line: the cheapest evidence that would raise it, and roughly how
-  long it takes. That turns a "no" into a to-do the user can choose.
+  long it takes. That turns a "no" into a to-do the user can choose. It's
+  only a near miss if that evidence could plausibly exist: a documented
+  trick, or a copy of a tool that already does more, has no edge to measure
+  and stays plain Common.
+- The author's opinion of the item is not evidence.
 - Expect nearly everything to be Common. If more than one item in a session
   rates above Common, say why this session is the exception.
 - Common is not a failure. It is the journal entry that keeps the work from
   being lost.
+<!-- rater:end -->
 
 Show the loot table, with the evidence for anything above Common, and stop:
 
@@ -136,6 +157,16 @@ if missing), dated. A drop earns a full entry only if a future session would
 go wrong, or redo real work, without it. Otherwise it's a one-line "noted"
 entry. The journal is only useful if it stays readable.
 
+- **Seen it before?** Search `LOOT.md` for the same root idea first. If it's
+  there, write `seen again (first: <date> #<n>)` plus only what's new, instead
+  of a second full entry. Repeat sightings are evidence for `/loot review`.
+- **A better home.** `LOOT.md` is the fallback, not always the best place. For
+  each Common drop, add `home:` when a narrower place would do more good:
+  a rule the agent keeps breaking → `CLAUDE.md` / `AGENTS.md`; an invariant →
+  a test; the reason behind odd code → a comment next to it; why a change was
+  made → the commit message. Offer to write each one, and write it only after
+  a yes for that item. These stay local; nothing here is published.
+
 ## 3. Forge
 
 For each chosen item, build the finished thing in a **new folder outside the
@@ -152,6 +183,9 @@ current repo's history** (default `../<slug>`, or where the user says). Read
   show an image instead of a blank GitHub card.
 - **README.** Result first, then quickstart, then how it works.
 - **Proof.** A test, a benchmark, or a before/after. Never invent numbers.
+- **Read cold.** The writer misses its own filler. Give each README and post
+  to a fresh agent that hasn't seen the session (or, without one, reread it
+  as a stranger) with `references/forge.md` → "Read cold". Fix what it flags.
 
 **Skills:** if the chosen form is a skill, follow the `skill-factory` skill
 that ships next to this one (`../skill-factory/SKILL.md`), handing it the item's
@@ -183,8 +217,8 @@ fall back to handing the user a ready-to-run command or file.
 - Repo: `gh repo create`, description, topics, push.
 - Post: dev.to or Hashnode as a **draft** when a token is already configured;
   otherwise a Markdown file. Medium: Markdown plus import instructions.
-- Launch posts (Show HN, X, Reddit), Epic only: drafts in a gitignored
-  `launch/` folder. Never post them.
+- Launch posts (Show HN, X, Reddit): drafts in a gitignored `launch/` folder,
+  for Epic by default and for Rare when the user asks. Never post them.
 - Finish with links to everything shipped and anything left for the user.
 
 ## 6. Review (`/loot review`)
@@ -197,7 +231,11 @@ Ratings from one session are a guess. Evidence builds up over time:
    it gained proof (users, a benchmark, someone asked for it), or a new search
    finds nothing equivalent anymore. Use the same evidence rules and the same
    outside rater.
-3. Show what moved and why. Write a dated "review" section to `LOOT.md`; never
+3. Mark what went stale: an entry that's no longer true (the bug got fixed
+   upstream, the tool it beat added the feature, a later entry replaced it)
+   gets `stale: <date> #<n>, <why>` in the review section, so a future
+   session doesn't act on it.
+4. Show what moved and why. Write a dated "review" section to `LOOT.md`; never
    rewrite old entries. Then offer to ship anything that's now Rare or better.
 
 ## Use what the agent has
