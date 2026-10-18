@@ -1,38 +1,50 @@
 <p align="center"><img src="assets/logo.svg" width="96" alt=""></p>
 <h1 align="center">loot</h1>
-<p align="center"><b>Every AI session drops loot. <code>/loot</code> finds it, polishes it, ships it.</b></p>
+<p align="center"><b>Capture useful knowledge from AI sessions. Assess and publish selected work when ready.</b></p>
 
 <p align="center"><img src="assets/demo.gif" width="720" alt="loot scanning a session, rating all four drops Common, and saving them to LOOT.md"></p>
 
-You spend an evening with Claude or Codex and find something good: a trick that
-makes a framework 4× faster, a pile of corrections that finally got Remotion to
-make After Effects-style edits, a tool that just works. Then you close the tab,
-and it dies in the chat log.
+An AI session can produce working code, a useful fix, a decision, or corrections
+that improve the next attempt. Loot helps preserve those results beyond the chat.
 
-**loot** is an agent skill that stops that. Run it at the end of a session and it:
+**Loot is an agent skill**: instructions your existing agent follows to read
+session material and keep selected findings in
+`LOOT.md`. Its default capture mode:
 
-1. **Scans** the whole session for anything worth keeping: the main build,
+1. **Reads** the available session or supplied transcript for worthwhile results: the main build,
    side discoveries, techniques, and the feedback you taught the agent.
-2. **Writes it all down** in `LOOT.md`, a running journal of what you figured out.
-   That's most of the value.
-3. **Rates usefulness** from your workflow, separately from public novelty.
-   Ordinary capture needs no web search or outside rater. Ask `/loot assess`
-   for a researched rarity rating and independent assessment before publishing.
-4. **Forges** a selected drop into finished work: a clean repo with
-   README, logo and tests, an agent skill, a blog post, a gist, a demo video.
-5. **Checks** for secrets and private data, then **ships** only after you say yes.
+2. **Records selected findings** with their evidence, limitations and usefulness
+   in `LOOT.md`, checking for earlier entries before adding duplicates.
+3. **Stops after capture**, without web searches, an outside rater or publication.
+
+When requested, `/loot assess` researches public alternatives and assesses rarity
+separately. A selected item can then be developed into a repo, agent skill, post,
+gist or demo using the tools your agent has. That publication workflow includes
+validation, secret checks and approval of the exact release manifest. If a needed
+capability is unavailable, Loot supplies a fallback where possible and identifies
+what remains for you to do.
 
 ## Usefulness and rarity are separate
 
-**Usefulness** answers “will this help us again?” **Rarity** answers “what
-evidence distinguishes it from public alternatives?” A Common technique can
-have High usefulness. A novel one-off can have Low personal usefulness.
+**Usefulness** describes practical value to the user or workflow, supported by
+context such as avoided rework, a recurring need or a known mistake prevented.
+**Rarity** describes the evidence for distinction from public alternatives.
+
+Rare and Epic items can be highly useful. Common items can also be highly useful.
+Neither rating determines the other: rarity requires evidence about alternatives,
+while usefulness requires evidence about the task and its impact. Completing an
+important one-time task does not automatically make its usefulness Low; the
+benefit matters as well as the likelihood of reuse.
+
+Loot currently records **two ratings**, not separate scores for past benefit,
+future reuse and value to other people. Explain those distinctions in the entry
+when relevant, and name whose workflow the usefulness judgment concerns.
 
 | Usefulness | Meaning for this user or workflow |
 |---|---|
-| **High** | Recurring need, substantial observed rework avoided, or an important recurring failure prevented. |
+| **High** | Substantial observed rework avoided, a recurring need, or an important recurring failure prevented. Recurrence is not required when the observed benefit already supports this rating. |
 | **Medium** | Concrete likely reuse or a known mistake avoided; repeat impact not yet established. |
-| **Low** | A one-off detail with little expected carry-forward value. |
+| **Low** | A minor detail with little expected carry-forward value and no substantial demonstrated benefit. Being a one-off is not sufficient by itself. |
 | **Unknown** | Insufficient context; missing evidence is not automatically low value. |
 
 ### Capture first
@@ -44,10 +56,11 @@ stays **Not assessed**, or retains a dated previous assessment.
 
 ### Assess rarity when needed
 
-`/loot assess` adds searches and an independent rater. These labels describe
-public distinction, not whether the work deserves to be remembered:
+`/loot assess` adds searches and an independent rater when available, with a
+documented self-review fallback. These labels describe public distinction,
+not whether the work deserves to be remembered:
 
-| Rarity | Needs all of | What you get |
+| Rarity | Needs all of | Possible forms when selected |
 |---|---|---|
 | **Common** | anything below Rare | retain according to usefulness; publish if explicitly selected, without unsupported novelty claims |
 | **Rare** | a real search query; a search that found nothing equivalent (with links), or a measured edge over the closest result; proof it works | gist, short post, or a small repo or skill |
@@ -104,8 +117,10 @@ npx skills add hamgarian/loot-skill -g                  # every project
 npx skills add hamgarian/loot-skill -g -a codex         # one specific agent
 ```
 
-Built and tested in Claude Code. Other agents should work since it's a plain
-`SKILL.md`; if one doesn't, please open an issue.
+The repository includes Claude Code and Codex plugin metadata and a portable
+`SKILL.md`. The original workflow was developed in Claude Code; the separate
+usefulness and mode evaluations were run with Codex agents. Capabilities such as
+search, subagents, file access and publishing depend on the host agent.
 
 **ChatGPT, claude.ai or any chat app:** paste
 [`skills/loot/SKILL.md`](skills/loot/SKILL.md) and say "run loot on this conversation".
@@ -164,13 +179,13 @@ Will publish:
 Go ahead? (yes / change something / no)
 ```
 
-Nothing leaves your machine until you say `yes`.
+No artifact is published until you approve its exact destinations and files.
 
 **5. Come back to it.**
 
 - Forgot to loot a session? `/loot --list`, then `/loot <file>` from the list.
-- Every week or two: `/loot review`. Drops that keep coming back, or that
-  gained proof since, get re-rated.
+- `/loot review` refreshes usefulness and evidence. Prior rarity is preserved
+  with its date unless you request a researched reassessment.
 - Want a nudge? Turn on the [end-of-session reminder](#end-of-session-reminder-optional).
 
 ## Use
@@ -180,8 +195,8 @@ Nothing leaves your machine until you say `yes`.
 /loot capture           explicit lightweight capture; no search or outside rater
 /loot "the ffmpeg trick"  capture one thing only
 /loot assess            research rarity and rate usefulness independently
-/loot 2                 ship drop #2
-/loot all               ship everything rated Rare or better
+/loot 2                 prepare drop #2; publication still needs manifest approval
+/loot all               prepare Rare-or-better drops; publication still needs manifest approval
 /loot --list            list your recent Claude Code and Codex sessions
 /loot <session file>    capture a past session: Claude Code / Codex .jsonl, or an .md/.txt export
 /loot review            refresh usefulness/evidence; preserve prior dated rarity unless reassessment requested
@@ -204,9 +219,11 @@ off until you turn it on in `~/.claude/settings.json`:
 
 ## Uses what your agent has
 
-loot asks for capabilities, not specific tools, and always has a fallback.
+Loot uses the host agent's capabilities. Its instructions provide fallbacks
+for missing tools; those fallbacks may leave a manual step rather than complete
+the original action automatically.
 
-| Need | Best | Always works |
+| Need | Preferred capability | Fallback |
 |---|---|---|
 | Logo / cover image | your agent's image generation or an image MCP | hand-written SVG |
 | Secret scan | [gitleaks](https://github.com/gitleaks/gitleaks), including git history | bundled `scan.mjs` |
@@ -216,16 +233,21 @@ loot asks for capabilities, not specific tools, and always has a fallback.
 | Publish repo | `gh` CLI | the commands, printed for you |
 | Publish post | dev.to / Hashnode API (draft) with your existing token | a Markdown file |
 
-## What it will never do
+## Publication safeguards
 
-- Publish anything before you approve the exact list of what goes where.
-- Ask for, type or store your passwords or API keys.
-- Publish secrets: every folder goes through the bundled scanner
+The skill instructs the agent to:
+
+- Obtain approval for the exact destinations and files before publishing.
+- Use existing authentication rather than requesting or storing credentials.
+- Scan each publication folder with the bundled scanner
   ([`scan.mjs`](skills/loot/scripts/scan.mjs), zero dependencies) and gitleaks
   when you have it. Old git history is never pushed unless gitleaks scanned it.
-- Publish client or employer work, or relicense code you didn't write.
-- Post to social media. Launch posts are drafts; you post them.
-- Invent benchmarks, users or star counts.
+- Exclude private/client work and respect the licenses of third-party code.
+- Leave social launch posts as drafts for you to post.
+- Support claims with recorded evidence rather than inventing results.
+
+These are agent instructions, not a separate enforcement service. The bundled
+scanner detects known patterns; its limitations are described below.
 
 ## How it works
 
@@ -248,9 +270,9 @@ hooks/remind.mjs        optional end-of-session reminder
 ```
 
 When a drop's form is a skill, loot hands it to **skill-factory**, which also
-works on its own (`/skill-factory <idea>`). The builder never reviews its own
-work: a fresh subagent does, or, in agents without subagents, a written case
-for failure on every checklist item.
+works on its own (`/skill-factory <idea>`). It requests review by a fresh
+subagent when available. Otherwise, the builder writes a case for failure
+against every checklist item before deciding whether it passes.
 
 Ideas borrowed from the similar tools below: reading past transcripts
 (logex), re-rating the journal over time (retro, learning-loop), a cap on
@@ -276,13 +298,15 @@ On 4 real past sessions, each with a fake credential planted in it, loot
 captured **37 of 46** things an independent judge said were worth keeping
 (19 of 20 high-importance ones) and leaked nothing. compound-engineering's
 `ce-compound` wrote nothing on any of them, as its own rules say it should:
-it only documents solved bugs that the code doesn't already explain. So loot
-is the better journal; whether it beats ce-compound at documenting a hard repo
-bug fix wasn't tested. Setup, numbers and limits:
+it only documents solved bugs that the code doesn't already explain. In that
+small sample, Loot captured a broader range of session findings. This does not
+establish that it is the better tool for every journaling or bug-documentation
+task. Setup, numbers and limits:
 [`evals/head-to-head.md`](evals/head-to-head.md). Details and how to rerun them: [`evals/README.md`](evals/README.md).
 
-This repo was built in one Claude Code session and then looted with itself.
-The write-up is in [`posts/`](posts/).
+The initial version was built in one Claude Code session and then looted with
+itself. That write-up is in [`posts/`](posts/); later changes are recorded in
+[CHANGELOG.md](CHANGELOG.md).
 
 ## Similar tools
 
