@@ -39,7 +39,9 @@ export function turns(file) {
 }
 
 // Condensed, redacted text: user and assistant messages in full, tool calls as one line each.
+// A non-JSONL file (a Markdown or text export from any other agent) is passed through, redacted.
 export function condense(file, maxChars = 120_000) {
+  if (!file.endsWith('.jsonl')) return cut(redact(readFileSync(file, 'utf8')), maxChars);
   const lines = [];
   for (const t of turns(file)) {
     if (t.role === 'tool') {
@@ -48,11 +50,12 @@ export function condense(file, maxChars = 120_000) {
       else lines.push(`· tools: ${t.text}`);
     } else lines.push(`## ${t.role === 'summary' ? 'summary of earlier conversation' : t.role}\n${t.text.trim()}`);
   }
-  let text = redact(lines.join('\n\n'));
-  // Keep the start (the goal) and the end (where it landed) when a session is too long.
-  if (text.length > maxChars) text = `${text.slice(0, maxChars / 2)}\n\n[… ${text.length - maxChars} characters cut …]\n\n${text.slice(-maxChars / 2)}`;
-  return text;
+  return cut(redact(lines.join('\n\n')), maxChars);
 }
+
+// Keep the start (the goal) and the end (where it landed) when a session is too long.
+const cut = (text, maxChars) =>
+  text.length > maxChars ? `${text.slice(0, maxChars / 2)}\n\n[… ${text.length - maxChars} characters cut …]\n\n${text.slice(-maxChars / 2)}` : text;
 
 const jsonl = (dir, depth) => {
   let files = [];

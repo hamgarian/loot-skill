@@ -17,7 +17,7 @@ export function remind(input, env = process.env, dir = tmpdir()) {
   const messages = turns(input.transcript_path).filter((t) => t.role === 'user' || t.role === 'assistant').length;
   if (messages < MIN_MESSAGES) return null;
   writeFileSync(marker, '');
-  return `Long session (${messages} messages). Anything worth keeping? Run /loot to save it to LOOT.md.`;
+  return `Long session (${messages} messages). Anything worth keeping? Run /loot (or /loot --auto to just journal it).`;
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {

@@ -68,6 +68,14 @@ test('condense groups tool calls, redacts secrets and keeps both ends when cut',
   assert.match(cut, /removed it\.$/);
 });
 
+test('reads a Markdown export from any other agent, redacted', () => {
+  const file = join(home, 'cursor-export.md');
+  writeFileSync(file, `# Chat\n\n**User:** use key ${AWS}\n\n**Assistant:** done\n`);
+  const text = condense(file);
+  assert.match(text, /\*\*User:\*\* use key \[redacted\]/);
+  assert.match(text, /\*\*Assistant:\*\* done/);
+});
+
 test('list finds both agents, newest first, with the first prompt', () => {
   const sessions = list(home);
   assert.deepEqual(sessions.map((s) => s.agent).sort(), ['claude', 'codex']);
