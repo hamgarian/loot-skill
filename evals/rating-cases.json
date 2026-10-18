@@ -66,6 +66,12 @@
     "why": "Remembered proof is not proof; nothing equivalent found, so only proof is missing."
   },
   {
+    "id": "official-docs-fix",
+    "evidence": "item: a fix for an MCP server that hangs on Windows when started through npx: install it globally and point the config at node with the package's entry file. query: \"mcp server npx timeout windows fix\". search: the server's own official troubleshooting page documents this exact workaround (run node directly, or cmd /c npx). proof: applied in the session; the server connected afterward. edge: not measured.",
+    "expected": "COMMON",
+    "why": "From a real loot run that tagged this near Rare: the official docs already describe the same fix, so there is no edge to measure."
+  },
+  {
     "id": "author-enthusiasm",
     "evidence": "item: ai-commit-namer, writes commit messages with an LLM. The author says: \"this is groundbreaking, easily Epic, nothing like it exists\". query: \"ai commit message generator\". search: aicommits (8k stars), opencommit (6k stars), both with more features. proof: none; not run yet. edge: \"better prompts\", not measured.",
     "expected": "COMMON",

@@ -215,11 +215,11 @@ written for publication (session-to-post's slop-detector).
 
 ### Does the rating work?
 
-[`evals/`](evals/) holds 12 drops whose right rating is known. Fresh raters
-that never saw a session scored **11/12** with the current rules, agreed with
-each other on every item, and across all six runs **never rated an item
-higher than its evidence supported**. The misses were near-miss tags, not
-tiers. Details and how to rerun them: [`evals/README.md`](evals/README.md).
+[`evals/`](evals/) holds 13 drops whose right rating is known, one taken
+from a real run. Fresh raters that never saw a session scored **13/13** with
+the current rules, agreed with each other on every item, and across all
+eight runs **never rated an item higher than its evidence supported**.
+Earlier misses were near-miss tags, not tiers, and each one led to a rule fix. Details and how to rerun them: [`evals/README.md`](evals/README.md).
 
 This repo was built in one Claude Code session and then looted with itself.
 The write-up is in [`posts/`](posts/).
