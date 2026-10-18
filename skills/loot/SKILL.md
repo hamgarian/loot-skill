@@ -153,6 +153,12 @@ current repo's history** (default `../<slug>`, or where the user says). Read
 - **README.** Result first, then quickstart, then how it works.
 - **Proof.** A test, a benchmark, or a before/after. Never invent numbers.
 
+**Skills in Claude Code:** if the chosen form is a skill and a `skill-factory`
+skill is installed, hand the item to `/skill-factory` with its evidence (query,
+search results, proof, edge) as the starting spec, and skip steps 3–5 for that
+item; skill-factory builds, reviews and gates the release itself. Every other
+agent, or no skill-factory: carry on below.
+
 ## 4. Check (never skip)
 
 1. Scan every folder you will publish for secrets:
@@ -206,6 +212,7 @@ Ratings from one session are a guess. Evidence builds up over time:
 | "Does it exist?" | web search | mark "not checked" (caps it at Common) |
 | Past or summarized sessions | `scripts/transcript.mjs` (Claude Code, Codex) | ask the user to paste or export the conversation |
 | Independent rating | a subagent that never sees the conversation | the strongest case for Common, written first |
+| Build and release a skill | `skill-factory` (Claude Code), if installed | loot's own steps 3–5 |
 | Publish repo | `gh` CLI | print the commands |
 | Publish post | the platform's API with an existing token | Markdown file |
 
