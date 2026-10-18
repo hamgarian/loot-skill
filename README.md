@@ -1,6 +1,6 @@
 <p align="center"><img src="assets/logo.svg" width="96" alt=""></p>
 <h1 align="center">loot</h1>
-<p align="center"><b>Capture useful knowledge from AI sessions. Assess and publish selected work when ready.</b></p>
+<p align="center"><b>Every AI session drops loot. <code>/loot</code> finds it, polishes it, ships it.</b></p>
 
 <p align="center"><img src="assets/demo.gif" width="720" alt="loot scanning a session, rating all four drops Common, and saving them to LOOT.md"></p>
 
