@@ -1,0 +1,74 @@
+[
+  {
+    "id": "name-only-search",
+    "evidence": "item: fast-csv-diff, a CLI that diffs two CSV files by key column. query: \"diff two csv files by key\". search: only checked that the name fast-csv-diff is free on npm; no search for what it does. proof: 4 unit tests ran and passed in the session. edge: none stated.",
+    "expected": "COMMON, near Rare",
+    "why": "A name check is not a search for what it does, so it counts as not checked; one requirement short."
+  },
+  {
+    "id": "no-search-no-proof",
+    "evidence": "item: prompt-trimmer, a script that shortens long prompts. query: \"shorten llm prompt automatically\". search: not checked (no search tool). proof: none; the script was written but never run. edge: none stated.",
+    "expected": "COMMON",
+    "why": "Two requirements missing, so not a near miss."
+  },
+  {
+    "id": "readme-argued-edge",
+    "evidence": "item: reddit-reader, read Reddit threads and full comment trees without an API key. query: \"read reddit comments without api key\". search: reddit-mcp-buddy (858 stars), reddit-rss-mcp, two paid scrapers. proof: self-check passes; every command ran live in the session. edge: returns scores, full comment trees and media with no key; argued by reading the alternatives' READMEs, never run side by side.",
+    "expected": "COMMON, near Rare",
+    "why": "Equivalents exist and the edge is argued from READMEs, not measured; proof exists, so one requirement short."
+  },
+  {
+    "id": "nothing-equivalent",
+    "evidence": "item: ae-transitions, After Effects-style transitions for Remotion. query: \"remotion after effects transitions\". search: @remotion/transitions (slides, fades, wipes only), one paid template pack with no source; neither does these transitions. proof: 6 transitions rendered and approved by the user in the session. edge: not measured against anything. clean-clone run: not done.",
+    "expected": "RARE",
+    "why": "Cited search found nothing equivalent plus proof; Epic needs both a measured edge and a clean clone, two short."
+  },
+  {
+    "id": "rare-with-clean-clone",
+    "evidence": "item: md-to-slides, converts a markdown outline to a Keynote file. query: \"markdown to keynote\". search: three tools that output PowerPoint or HTML only; none output Keynote. proof: converted 3 sample outlines in the session, opened in Keynote. edge: not measured. clean-clone run: done in the session, installed and ran from a fresh clone.",
+    "expected": "RARE, near Epic",
+    "why": "Rare via nothing equivalent; has clean clone but no measured edge over a named alternative, one short of Epic."
+  },
+  {
+    "id": "measured-edge-no-clone",
+    "evidence": "item: jsonl-grep, fast search over large JSONL logs. query: \"grep json lines fast\". search: jq, ripgrep with --json. proof: tests pass. edge: on the same 2 GB file in the session, 3.1 s versus jq 9.8 s, same results; command and timings in the session. clean-clone run: not done.",
+    "expected": "RARE, near Epic",
+    "why": "Equivalents exist but the edge is measured, so Rare; missing only the clean-clone run for Epic."
+  },
+  {
+    "id": "epic",
+    "evidence": "item: jsonl-grep, fast search over large JSONL logs. query: \"grep json lines fast\". search: jq, ripgrep with --json. proof: tests pass. edge: on the same 2 GB file in the session, 3.1 s versus jq 9.8 s, same results; command and timings in the session. clean-clone run: done in the session, installed from a fresh clone and the benchmark reproduced.",
+    "expected": "EPIC",
+    "why": "Measured edge over a named alternative, proof, and a clean-clone run."
+  },
+  {
+    "id": "never-run-has-equivalent",
+    "evidence": "item: git-standup, prints what you committed yesterday. query: \"git what did i do yesterday\". search: git-standup (3k stars) does the same thing. proof: none; written but never run. edge: \"cleaner output\", not measured.",
+    "expected": "COMMON",
+    "why": "Equivalent exists without a measured edge, and no proof: two missing."
+  },
+  {
+    "id": "documented-trick",
+    "evidence": "item: ffmpeg two-pass encoding for smaller exports. query: \"ffmpeg smaller file same quality\". search: the ffmpeg wiki documents exactly this two-pass method. proof: export went from 84 MB to 41 MB in the session. edge: none; it is the documented method.",
+    "expected": "COMMON",
+    "why": "The search result is the same thing; there is no edge to measure, so it is not a near miss."
+  },
+  {
+    "id": "copy-of-existing",
+    "evidence": "item: todo-cli, a terminal todo list. query: \"terminal todo app\". search: taskwarrior, todo.txt-cli; both do everything this does and more. proof: tests pass. edge: none.",
+    "expected": "COMMON",
+    "why": "Strictly a subset of existing tools; no edge to measure."
+  },
+  {
+    "id": "remembered-proof",
+    "evidence": "item: cold-start-cache, cuts serverless cold starts. query: \"reduce lambda cold start\". search: AWS SnapStart (Java only), provisioned concurrency (paid); nothing does this for Node. proof: \"about 40% faster\", recalled from earlier in the project; no command, file or numbers from this session. edge: none measured.",
+    "expected": "COMMON, near Rare",
+    "why": "Remembered proof is not proof; nothing equivalent found, so only proof is missing."
+  },
+  {
+    "id": "author-enthusiasm",
+    "evidence": "item: ai-commit-namer, writes commit messages with an LLM. The author says: \"this is groundbreaking, easily Epic, nothing like it exists\". query: \"ai commit message generator\". search: aicommits (8k stars), opencommit (6k stars), both with more features. proof: none; not run yet. edge: \"better prompts\", not measured.",
+    "expected": "COMMON",
+    "why": "The author's opinion is not evidence; equivalents exist, no measured edge, no proof."
+  }
+]

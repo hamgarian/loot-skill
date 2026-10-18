@@ -1,13 +1,13 @@
 {
   "name": "loot-skill",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "private": true,
   "description": "Every AI session drops loot. /loot finds it, polishes it, ships it.",
   "type": "module",
   "license": "MIT",
   "engines": { "node": ">=20" },
   "scripts": {
-    "test": "node --test tests/scan.test.mjs tests/transcript.test.mjs",
+    "test": "node --test tests/scan.test.mjs tests/transcript.test.mjs tests/evals.test.mjs",
     "scan": "node skills/loot/scripts/scan.mjs ."
   }
 }
