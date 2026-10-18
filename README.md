@@ -179,7 +179,7 @@ loot asks for capabilities, not specific tools, and always has a fallback.
 
 ## How it works
 
-It's one `SKILL.md` plus two reference files and a secret scanner: no server,
+It's two `SKILL.md` files plus reference files and a secret scanner: no server,
 no account, no dependencies beyond Node for the scanner. The agent you already
 use does the work with the tools it already has.
 
@@ -190,8 +190,16 @@ skills/loot/
   references/ship.md    publish commands and fallbacks
   scripts/scan.mjs      secret scanner (node scan.mjs <folder>)
   scripts/transcript.mjs  reads past Claude Code and Codex sessions, secrets redacted
+skills/skill-factory/
+  SKILL.md              spec → tests first → independent review → release gate
+  references/release-checklist.md  what the reviewer checks before anything ships
 hooks/remind.mjs        optional end-of-session reminder
 ```
+
+When a drop's form is a skill, loot hands it to **skill-factory**, which also
+works on its own (`/skill-factory <idea>`). The builder never reviews its own
+work: a fresh subagent does, or, in agents without subagents, a written case
+for failure on every checklist item.
 
 Ideas borrowed from the similar tools below: reading past transcripts
 (logex), re-rating the journal over time (retro, learning-loop), a cap on
