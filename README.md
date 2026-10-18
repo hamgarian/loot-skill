@@ -136,8 +136,10 @@ Nothing leaves your machine until you say `yes`.
 /loot 2                 ship drop #2
 /loot all               ship everything rated Rare or better
 /loot --list            list your recent Claude Code and Codex sessions
-/loot <session.jsonl>   loot a past session
-/loot review            re-rate LOOT.md: drops that keep coming back or gained proof move up
+/loot <session file>    loot a past session: Claude Code / Codex .jsonl, or any agent's .md/.txt export
+/loot review            re-rate LOOT.md: drops that keep coming back or gained proof move up,
+                        entries that are no longer true get marked stale
+/loot --auto            unattended: scan, rate, journal, stop (for claude -p or a schedule)
 ```
 
 Or just say "loot this session" or "what from this is worth shipping?"
@@ -189,7 +191,8 @@ skills/loot/
   references/forge.md   checklists for repo, skill, post, gist, demo, name, logo
   references/ship.md    publish commands and fallbacks
   scripts/scan.mjs      secret scanner (node scan.mjs <folder>)
-  scripts/transcript.mjs  reads past Claude Code and Codex sessions, secrets redacted
+  scripts/transcript.mjs  reads past sessions (Claude Code, Codex, any text export), secrets redacted
+evals/                  12 rating cases + a scorer; the prompt is built from SKILL.md itself
 skills/skill-factory/
   SKILL.md              spec → tests first → independent review → release gate
   references/release-checklist.md  what the reviewer checks before anything ships
@@ -204,8 +207,19 @@ for failure on every checklist item.
 Ideas borrowed from the similar tools below: reading past transcripts
 (logex), re-rating the journal over time (retro, learning-loop), a cap on
 how much one run reports (retro), a bar for what's worth writing down and a
-rule against invented evidence (learning-loop), and an opt-in reminder
-instead of auto-running (retro).
+rule against invented evidence (learning-loop), an opt-in reminder instead
+of auto-running (retro), evals for the judging step (retro), seen-again and
+stale tracking, a narrower home for each lesson, and an unattended mode
+(compound-engineering's ce-compound), and a cold-read pass on everything
+written for publication (session-to-post's slop-detector).
+
+### Does the rating work?
+
+[`evals/`](evals/) holds 12 drops whose right rating is known. Fresh raters
+that never saw a session scored **11/12** with the current rules, agreed with
+each other on every item, and across all six runs **never rated an item
+higher than its evidence supported**. The misses were near-miss tags, not
+tiers. Details and how to rerun them: [`evals/README.md`](evals/README.md).
 
 This repo was built in one Claude Code session and then looted with itself.
 The write-up is in [`posts/`](posts/).
@@ -214,6 +228,8 @@ The write-up is in [`posts/`](posts/).
 
 Found by running loot's own existence check on itself:
 
+- [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) `ce-compound`: writes durable, non-obvious solved problems to `docs/solutions/`; doesn't publish.
+- [session-to-post](https://github.com/athola/claude-night-market) (claude-night-market): turns a session into a blog post, case study or Reddit post.
 - [logex](https://github.com/iamtouchskyer/logex): turns Claude Code transcripts into blog-style articles.
 - [work-to-blog-publisher](https://github.com/greeun/work-to-blog-publisher): Claude Code skill that publishes session work to GitHub and WordPress.
 - [insight-capture](https://github.com/xmoonanx/insight-capture): Claude Code and Codex session insights into Jekyll posts.
@@ -224,18 +240,20 @@ Found by running loot's own existence check on itself:
 
 loot's differences: a rating step built to say no, a secret-scan and approval
 gate before anything goes public, and one pass that can produce a repo, skill,
-post or demo. None of that is measured against these tools yet.
+post or demo. The rating is tested on known cases (above); a side-by-side
+run against these tools on real sessions hasn't been done yet.
 
 ## Limits
 
-- Past sessions are read from Claude Code and Codex transcripts only. Other
-  agents: paste or export the conversation. Very long transcripts are cut in
-  the middle (start and end kept), and loot says so.
+- Past sessions are parsed from Claude Code and Codex transcripts; other
+  agents need a Markdown or text export of the conversation. Very long
+  transcripts are cut in the middle (start and end kept), and loot says so.
 - The bundled scanner is a safety net (known key formats, `.env` files,
   passwords in URLs), not a full audit. Install gitleaks for the real thing.
-- Ratings are still an LLM's judgment. The evidence rules and the outside
-  rater reduce flattery; they don't remove it. Read the cited search results,
-  not the label.
+- Ratings are still an LLM's judgment. The evidence rules, the checklist and
+  the outside rater reduce flattery, and the evals show it holds on known
+  cases; 12 cases are not every case. Read the cited search results, not
+  the label.
 
 ## License
 
