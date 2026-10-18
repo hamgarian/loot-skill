@@ -3,20 +3,23 @@ name: loot
 description: >
   Find everything worth keeping from this AI session (the main build, side
   discoveries, techniques, the feedback the user taught you), rate each by
-  rarity on evidence, save them to LOOT.md, and turn the rare one that earns it
+  usefulness separately from rarity, save them to LOOT.md with a lightweight
+  capture pass, and turn a selected item
   into finished public work: a GitHub repo with docs and a logo, an agent
   skill, a blog post, a gist, a demo video. Also reads past Claude Code and
   Codex sessions. Use when the user says "loot", "/loot", "what's worth
   shipping from this", or "turn this into a repo / skill / blog post".
-argument-hint: "[number | all | \"topic\" | review | --auto | --list | <session file>]"
+metadata:
+  argument-hint: "[capture | assess | number | all | \"topic\" | review | --auto | --list | <session file>]"
 license: MIT
 ---
 
 # loot
 
 Every session drops loot. Most of it dies in the chat log. Your job: find it,
-write it all down, judge it on evidence instead of enthusiasm, and ship only
-the rare piece that earns it, after the user says yes.
+write it down, judge its usefulness separately from its public novelty, and
+ship a selected piece after the user says yes. A familiar technique can still
+be worth preserving or publishing; rarity is not a verdict on its usefulness.
 
 Most of loot's value is `LOOT.md`: a running record of everything the user
 figured out. Publishing is the exception.
@@ -40,17 +43,22 @@ forms (repo + post + demo).
 
 | Command | Does |
 |---|---|
-| `/loot` | scan this session, show the table, ask what to ship |
-| `/loot "<topic>"` | look at one thing only (cheaper): "the ffmpeg trick" |
-| `/loot 2`, `/loot all` | ship drop 2, or every drop rated Rare or better, without asking which |
+| `/loot`, `/loot capture` | lightweight: scan, rate usefulness, save to `LOOT.md`, then stop; no web search or outside rater |
+| `/loot "<topic>"` | capture one thing only: "the ffmpeg trick" |
+| `/loot assess` | assess usefulness and researched rarity, using an outside rater; show publication candidates |
+| `/loot 2` | prepare drop 2 for publication, even if Common; assess only that drop if needed, then use the release gate |
+| `/loot all` | assess if needed, then prepare every Rare-or-better drop; final publication still needs manifest approval |
 | `/loot --list` | list recent past sessions to pick from |
-| `/loot <session file>` | scan a past session instead of this one: a Claude Code or Codex `.jsonl`, or a Markdown/text export from any other agent |
-| `/loot review` | re-rate what's already in `LOOT.md` (see step 6) |
-| `/loot --auto` | unattended: scan, rate, write `LOOT.md`, then stop. Never asks, forges, publishes, or edits any other file. For `claude -p "/loot --auto"` or a scheduled run |
+| `/loot <session file>` | capture a past Claude Code/Codex `.jsonl`, or Markdown/text transcript |
+| `/loot review` | refresh usefulness and evidence in the journal; research rarity only when asked (see step 6) |
+| `/loot --auto` | unattended capture: scan, rate usefulness, write only `LOOT.md`, then stop |
+| `/loot assess --auto` | unattended full assessment, including searches and outside rating; write only `LOOT.md`, then stop |
 
-**`--auto`** runs steps 1 and 2 exactly as written, with the same searches and
-the same outside rater, because an unattended rating needs evidence most.
-Then it appends to `LOOT.md` in the current working directory and stops.
+**`--auto`** always overrides shipping arguments: never ask, forge, publish,
+or edit any file except `LOOT.md`. Default capture uses steps 1 and 2a only;
+explicit `assess` also uses step 2b with searches and an outside rater.
+Use the project's root for `LOOT.md` when known, otherwise the current
+working directory, consistently across all modes. Append and stop.
 `home:` suggestions are listed but not offered or written. If the session is
 already in `LOOT.md` and nothing new turned up, write one `seen again` line,
 not a second table.
@@ -71,17 +79,48 @@ the table: early discoveries may be missing. List candidates. For each
 one, write down what it does and the proof that it works (test, benchmark,
 before/after, the user's reaction).
 
-Drop an item when it only works in this user's setup and cannot be made
-general, when it is mostly someone else's code, or when it is the user's
-private or client work. Do not mention secrets, credentials or personal data
-from the session in the table.
+Keep useful local lessons even when they only apply to this user's setup or
+an equivalent already exists. Separate journal value from publication
+eligibility. Exclude private/client work and mostly third-party code from
+public candidates; preserve only a sanitized general lesson locally when
+that is appropriate. Never put secrets, credentials or personal data in the table.
 
-## 2. Rate
+## 2a. Rate usefulness — every capture or assessment
 
-The rating is a filter, and its job is to say no. You are a bad judge of work
-you just helped make: you can't tell what is new to the world, and you lean
-toward flattering the user. So rarity comes from evidence, and the judging
-happens away from the conversation.
+Usefulness means value to this user or workflow, not originality or proof of
+market demand. State the context and one concrete reason. Use these labels:
+
+<!-- usefulness:start -->
+| Usefulness | Evidence to support it |
+|---|---|
+| **High** | A recurring need, substantial observed rework avoided, or an important recurring failure prevented. Cite the repeated use, correction, or observed cost. |
+| **Medium** | A concrete likely reuse or mistake avoided, but recurrence or substantial impact is not yet established. |
+| **Low** | A one-off detail with little expected carry-forward value; usually a one-line note. |
+| **Unknown** | Not enough context to judge future value. Say what is missing rather than treating missing evidence as low value. |
+
+Use observed context, including user corrections and traceable historical
+checks. Do not invent hours saved, future adoption, or recurrence. High
+usefulness never raises rarity automatically, and Common never lowers
+usefulness automatically. Rate separately even when one axis is Unknown.
+<!-- usefulness:end -->
+
+In capture mode, keep each entry short: finding, usefulness + reason,
+evidence source/limits, and an existing or proposed `home:` when helpful.
+For historical evidence, name the inspected source and date when known;
+mark missing metadata unknown, state that it was not rerun, and bound the
+claim to what that record demonstrates. Session discovery (`--list`) does
+not rate items.
+Set rarity to **Not assessed** unless a prior assessment is available; cite
+its date and preserve its limits. Do not search, dispatch a rater, rerun
+tests, or ask what to publish merely to save a lesson. Write the journal as
+described below, show a concise table, then stop.
+
+## 2b. Assess public rarity — explicit assessment or publication only
+
+Research and independent review are for a public-novelty claim or a selected
+publication, not the cost of remembering a lesson. Rarity measures the
+evidence for distinction from alternatives; it does not decide whether the
+user is allowed to publish useful familiar guidance.
 
 <!-- rater:start (evals/build-prompt.mjs reads this section) -->
 **Collect evidence** for each candidate:
@@ -90,18 +129,31 @@ happens away from the conversation.
 - **search**: run it (web, GitHub, npm/PyPI) and list the closest results with
   links. Search for what it *does*, not for its name. No search tool: "not checked".
 - **proof**: a test, benchmark or before/after that actually happened in the
-  session, with where (the command, the file, the message), or "none". Never
-  reconstruct proof from memory: AI notes invent names, numbers and details.
+  current or an earlier session, with a traceable command/result, artifact,
+  or recorded before/after, or "none". Mark it **fresh** (run now),
+  **recorded historical** (source inspected, not rerun), **reported historical**
+  (attributed account without inspected underlying results), or **absent**.
+  Recorded historical checks count toward proof within their demonstrated
+  scope; a fresh rerun is not required merely because evidence is old.
+  Record the source/date, relevant revision/environment when available, and
+  limits. Recheck when changed code, dependencies or a current-release claim
+  makes freshness material. Reported checks can inform usefulness, but do
+  not treat an uninspected summary as verified execution or benchmark output.
+  Never reconstruct proof from memory or invent missing details.
 - **edge**: what it does that the closest result doesn't, measured if possible
 
-**Rate it somewhere else.** If you can start a subagent, give it only the
-candidates and their evidence, never the conversation, with this brief:
+**Rate it somewhere else.** For full assessment, if you can start a subagent,
+give it only the candidates, usefulness context and sourced evidence, never
+the conversation, with this brief:
 "Rate each item against the bar below. Argue for Common first and raise an
 item only when its evidence meets the bar. When unsure, rate lower. Use only
 the evidence given; never add or assume any. For each item, list which of
 checklist items 1–5 are met, then give the rating those imply. For any item
 one requirement short of the next tier, name the cheapest evidence that would
-raise it." If you
+raise it. Separately rate usefulness High, Medium, Low or Unknown from the
+given user/workflow context; rarity and usefulness must not influence each
+other. Count recorded historical evidence within its scope, and preserve
+its age and limits instead of demanding a fresh rerun by default." If you
 can't, write the strongest case that each item is Common before rating it.
 If the subagent fails to start (for example a model error), retry once with
 another model before falling back, and say in the table header which rater
@@ -109,7 +161,7 @@ was used.
 
 | Rarity | Needs all of | Forms |
 |---|---|---|
-| **Common** | anything below Rare | a line in `LOOT.md` |
+| **Common** | anything below Rare | retain according to usefulness; user-selected publication is allowed without novelty claims |
 | **Rare** | a real query; a cited search that found nothing equivalent, **or** a measured edge over the closest result; proof it works | gist, short post, or a small repo or skill |
 | **Epic** | Rare, plus a measured edge over a named alternative, and it runs from a clean clone | repo or skill, post, demo, launch drafts |
 
@@ -142,39 +194,42 @@ Hard rules:
 - The author's opinion of the item is not evidence.
 - Expect nearly everything to be Common. If more than one item in a session
   rates above Common, say why this session is the exception.
-- Common is not a failure. It is the journal entry that keeps the work from
-  being lost.
+- Common describes public distinction only. A Common item can have High
+  usefulness and deserve a detailed reusable skill or an explicit publication.
 <!-- rater:end -->
 
-Show the loot table, with the evidence for anything above Common, and stop:
+In full assessment, show both ratings, with evidence for anything above
+Common, and ask what to prepare only if the user has not already selected it:
 
 ```
 LOOT: 3 drops
-1. [RARE, near Epic] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
+1. [RARE | usefulness: High] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
+   useful because: the workflow repeatedly needed these transitions
    query: "remotion after effects transitions"
    search: @remotion/transitions (slides, fades, wipes), one paid template pack; none do these
    proof: 6 transitions rendered and approved in the session
    edge: not measured, so not Epic → gist + short post
    next: render the same 3 shots with @remotion/transitions and compare; then a clean-clone run (~45 min)
-2. [COMMON] ffmpeg two-pass trick: documented in the ffmpeg wiki → LOOT.md
-3. [COMMON] custom font loader: only useful in this project → LOOT.md
+2. [COMMON | usefulness: High] ffmpeg two-pass trick: recurring export-size fix; documented elsewhere → LOOT.md
+3. [COMMON | usefulness: Medium] custom font loader: avoids redoing this project's setup → LOOT.md
 Ship which? (numbers, "all", or "none")
 ```
 
 Show at most 7 drops, strongest first. Everything else gets one line under
 "noted".
 
-Keep plain Common drops short: the finding itself in a line or two (the fix,
-the cause, the number), plus `home:` if it has one. The query / search /
-proof / edge fields are for near misses and above; on every Common item they
-bury the finding under the paperwork.
+Size journal entries by usefulness, not rarity. Low-value one-offs need a
+line; important recurring lessons may need enough detail to apply safely.
+Keep query/search/proof/edge detail for near misses, higher rarity claims,
+and publication assessment rather than burdening every captured note.
 
 Facts in the journal come from the session. Copy numbers, names and commands
 exactly as they appear there; never round or reconstruct them. Anything you
 learned from your own web search goes only on the `search:` line, with its
 link, so a reader can tell the session's facts from the web's.
 
-After showing the table, append it to `LOOT.md` in the project root (create it
+Append the findings to `LOOT.md` in the project root when known, otherwise
+the current working directory (create it
 if missing), dated. A drop earns a full entry only if a future session would
 go wrong, or redo real work, without it. Otherwise it's a one-line "noted"
 entry. The journal is only useful if it stays readable.
@@ -183,11 +238,12 @@ entry. The journal is only useful if it stays readable.
   there, write `seen again (first: <date> #<n>)` plus only what's new, instead
   of a second full entry. Repeat sightings are evidence for `/loot review`.
 - **A better home.** `LOOT.md` is the fallback, not always the best place. For
-  each Common drop, add `home:` when a narrower place would do more good:
+  each useful drop, add `home:` when a narrower place would do more good:
   a rule the agent keeps breaking → `CLAUDE.md` / `AGENTS.md`; an invariant →
   a test; the reason behind odd code → a comment next to it; why a change was
-  made → the commit message. Offer to write each one, and write it only after
-  a yes for that item. These stay local; nothing here is published.
+  made → the commit message. In capture, list the suggestion and stop. During
+  an action-oriented follow-up, offer to write it and do so only with the
+  user's authorization for that item. These stay local; nothing is published.
 
 ## 3. Forge
 
@@ -249,16 +305,18 @@ Ratings from one session are a guess. Evidence builds up over time:
 
 1. Read `LOOT.md`. Group entries that are the same thing seen again (same
    root idea, even if worded differently).
-2. Re-rate a drop when something changed: it came up in 3 or more sessions,
+2. Refresh usefulness and evidence when something changed: it came up in 3 or more sessions,
    it gained proof (users, a benchmark, someone asked for it), or a new search
-   finds nothing equivalent anymore. Use the same evidence rules and the same
-   outside rater.
+   finds nothing equivalent anymore. In ordinary review, preserve prior rarity
+   with its date or mark it Not assessed; use no web search or outside rater.
+   If the user requests a rarity reassessment, use step 2b and its outside rater.
 3. Mark what went stale: an entry that's no longer true (the bug got fixed
    upstream, the tool it beat added the feature, a later entry replaced it)
    gets `stale: <date> #<n>, <why>` in the review section, so a future
    session doesn't act on it.
-4. Show what moved and why. Write a dated "review" section to `LOOT.md`; never
-   rewrite old entries. Then offer to ship anything that's now Rare or better.
+4. Show what moved on each axis and why. Write a dated "review" section to
+   `LOOT.md`; never rewrite old entries. Offer publication only when the user
+   is exploring publication; useful Common items remain eligible if selected.
 
 ## Use what the agent has
 
@@ -268,7 +326,7 @@ Ratings from one session are a guess. Evidence builds up over time:
 | Secret scan | `gitleaks` (also covers git history) | bundled `scripts/scan.mjs` |
 | Demo video | Remotion (Node) | screenshots + GIF |
 | Screenshots | a browser tool | ask the user for one |
-| "Does it exist?" | web search | mark "not checked" (caps it at Common) |
+| "Does it exist?" (assessment only) | web search | mark "not checked" (caps assessed rarity at Common; usefulness stays independent) |
 | Past or summarized sessions | `scripts/transcript.mjs` (Claude Code, Codex) | ask the user to paste or export the conversation |
 | Independent rating | a subagent that never sees the conversation | the strongest case for Common, written first |
 | Publish repo | `gh` CLI | print the commands |

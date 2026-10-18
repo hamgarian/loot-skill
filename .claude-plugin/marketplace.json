@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "loot",
-      "description": "Find what's worth keeping from a session, rate it by rarity, ship it.",
+      "description": "Capture session lessons, rate usefulness and rarity separately, and ship selected work.",
       "source": "./",
       "category": "productivity"
     }

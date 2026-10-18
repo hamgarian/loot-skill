@@ -1,7 +1,7 @@
 {
   "name": "loot",
-  "version": "1.5.0",
-  "description": "Every AI session drops loot. /loot finds what's worth keeping, rates it by rarity, and ships it as a repo, skill, blog post or demo.",
+  "version": "1.6.0",
+  "description": "Capture valuable session lessons, rate usefulness separately from rarity, and prepare selected work for publication.",
   "author": {
     "name": "hamgarian",
     "url": "https://github.com/hamgarian"
@@ -13,8 +13,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "loot",
-    "shortDescription": "Ship the valuable parts of your sessions",
-    "longDescription": "Scans the session for anything worth keeping, rates each drop by rarity, and turns the good ones into a repo, skill, blog post or demo after you approve.",
+    "shortDescription": "Capture lessons; assess and ship when ready",
+    "longDescription": "Captures session lessons with lightweight usefulness ratings. Separately researches public rarity when requested and prepares selected work for publication after approval.",
     "developerName": "hamgarian",
     "category": "Productivity",
     "capabilities": ["Instructions"],

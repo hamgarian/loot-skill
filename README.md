@@ -15,25 +15,56 @@ and it dies in the chat log.
    side discoveries, techniques, and the feedback you taught the agent.
 2. **Writes it all down** in `LOOT.md`, a running journal of what you figured out.
    That's most of the value.
-3. **Rates** each drop on evidence, not enthusiasm: it searches for what
-   already exists, asks for proof, and has a fresh agent that never saw your
-   conversation do the judging. Most drops are Common, and that's the point.
-4. **Forges** the rare drop that earns it into finished work: a clean repo with
+3. **Rates usefulness** from your workflow, separately from public novelty.
+   Ordinary capture needs no web search or outside rater. Ask `/loot assess`
+   for a researched rarity rating and independent assessment before publishing.
+4. **Forges** a selected drop into finished work: a clean repo with
    README, logo and tests, an agent skill, a blog post, a gist, a demo video.
 5. **Checks** for secrets and private data, then **ships** only after you say yes.
 
-## Rarity
+## Usefulness and rarity are separate
+
+**Usefulness** answers “will this help us again?” **Rarity** answers “what
+evidence distinguishes it from public alternatives?” A Common technique can
+have High usefulness. A novel one-off can have Low personal usefulness.
+
+| Usefulness | Meaning for this user or workflow |
+|---|---|
+| **High** | Recurring need, substantial observed rework avoided, or an important recurring failure prevented. |
+| **Medium** | Concrete likely reuse or a known mistake avoided; repeat impact not yet established. |
+| **Low** | A one-off detail with little expected carry-forward value. |
+| **Unknown** | Insufficient context; missing evidence is not automatically low value. |
+
+### Capture first
+
+`/loot` and `/loot capture` preserve lessons quickly. They rate usefulness,
+record evidence and its limits, save `LOOT.md`, and stop. They do not run web
+searches, call a separate rater, rerun tests or ask what to publish. Rarity
+stays **Not assessed**, or retains a dated previous assessment.
+
+### Assess rarity when needed
+
+`/loot assess` adds searches and an independent rater. These labels describe
+public distinction, not whether the work deserves to be remembered:
 
 | Rarity | Needs all of | What you get |
 |---|---|---|
-| **Common** | anything below Rare | a line in `LOOT.md`, so it isn't lost |
+| **Common** | anything below Rare | retain according to usefulness; publish if explicitly selected, without unsupported novelty claims |
 | **Rare** | a real search query; a search that found nothing equivalent (with links), or a measured edge over the closest result; proof it works | gist, short post, or a small repo or skill |
 | **Epic** | Rare, plus a measured edge over a named alternative, and it runs from a clean clone | repo or skill, post, demo, launch drafts |
 
-"Not checked" or "no proof" means Common. Ties round down. Anything rated
+In a full rarity assessment, "not checked" or "no proof" means Common.
+Unassessed capture entries are not automatically Common. Ties round down. Anything rated
 above Common shows its evidence, so you can disagree. A near miss
 (`[COMMON, near Rare]`) comes with a `next:` line: the cheapest evidence that
 would raise it and roughly how long it takes.
+
+Historical checks count when their source is traceable and their scope is
+clear. Label evidence **fresh**, **recorded historical**, **reported historical**
+or **absent**. Inspected historical command/results or artifacts can establish
+working proof without a new run. An uninspected summary can inform usefulness
+but is not verified execution. Recheck when code, dependencies or the claim
+has changed, or before making a current-release validation claim.
 
 ### loot rates itself Common
 
@@ -52,8 +83,10 @@ LOOT: 4 drops
 Nothing above Common. 4 drops saved to LOOT.md.
 ```
 
-It's published anyway because it was built in the open. Under its own rules it
-would have stayed a line in `LOOT.md` until real use proves an edge.
+It was published because it was useful and built in the open. Common is not
+a publication ban: an explicit user selection can ship familiar guidance,
+provided its claims are accurate and the release checks pass. The table above
+is historical and predates the separate usefulness rating.
 
 ## Install
 
@@ -84,30 +117,42 @@ The output below is an illustrative example; yours will differ.
 **1. Work as usual.** Build the thing, fix the bug, argue with the agent until
 the output is right. loot needs nothing from you during the session.
 
-**2. Type `/loot` when you're done.** It reads the session, searches for what
-already exists, and shows a table:
+**2. Type `/loot` when you're done.** It reads the session and saves a short
+capture table, for example:
+
+```text
+LOOT: 2 drops — capture
+1. [usefulness: High | rarity: Not assessed] Trim feedback audio to its audible attack.
+   useful because: the same silent lead-in caused repeated sync corrections.
+   evidence: recorded historical render notes, inspected; audio not auditioned now.
+2. [usefulness: Medium | rarity: Not assessed] Reserve caption space before placing cursor targets.
+   useful because: caption reflow moved the next button in this edit.
+Saved to LOOT.md. No publication requested.
+```
+
+**3. Assess only when useful.** `/loot assess` researches public alternatives
+and adds rarity alongside usefulness. The following is an illustrative
+assessment table:
 
 ```
 LOOT: 3 drops
-1. [RARE, near Epic] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
+1. [RARE | usefulness: High] remotion-ae-transitions: After Effects-style transitions in Remotion, fully local
+   useful because: the workflow repeatedly needed these transitions
    query:  "remotion after effects transitions"
    search: @remotion/transitions (slides, fades, wipes), one paid template pack; none do these
    proof:  6 transitions rendered and approved in this session
    edge:   not measured, so not Epic → gist + short post
    next:   render the same 3 shots with @remotion/transitions and compare (~45 min)
-2. [COMMON] ffmpeg two-pass trick: documented in the ffmpeg wiki → LOOT.md
-3. [COMMON] custom font loader: only useful in this project → LOOT.md
+2. [COMMON | usefulness: High] ffmpeg two-pass trick: recurring export fix; documented in the ffmpeg wiki → LOOT.md
+3. [COMMON | usefulness: Medium] custom font loader: avoids repeating project setup → LOOT.md
 Ship which? (numbers, "all", or "none")
 ```
 
 Read the evidence lines, not just the label. If the search missed something or
 the proof is thin, say so and it re-rates.
 
-**3. Most of it is Common, and that's the point.** Every run is saved to
-`LOOT.md` in your project, so the trick you found at 2 AM is still there next
-month. Answer `none` and you're done.
-
-**4. Ship the rare one.** Answer `1`. loot builds it in a new folder (clean
+**4. Prepare a selected item.** Answer `1` or use `/loot 1`. A useful Common
+item is also eligible if you choose it. loot builds it in a new folder (clean
 code, README, logo, tests), scans it for secrets, then stops and shows you a
 manifest:
 
@@ -131,18 +176,21 @@ Nothing leaves your machine until you say `yes`.
 ## Use
 
 ```
-/loot                   scan this session and show the loot table
-/loot "the ffmpeg trick"  look at one thing only
+/loot                   capture lessons, rate usefulness, save and stop
+/loot capture           explicit lightweight capture; no search or outside rater
+/loot "the ffmpeg trick"  capture one thing only
+/loot assess            research rarity and rate usefulness independently
 /loot 2                 ship drop #2
 /loot all               ship everything rated Rare or better
 /loot --list            list your recent Claude Code and Codex sessions
-/loot <session file>    loot a past session: Claude Code / Codex .jsonl, or any agent's .md/.txt export
-/loot review            re-rate LOOT.md: drops that keep coming back or gained proof move up,
-                        entries that are no longer true get marked stale
-/loot --auto            unattended: scan, rate, journal, stop (for claude -p or a schedule)
+/loot <session file>    capture a past session: Claude Code / Codex .jsonl, or an .md/.txt export
+/loot review            refresh usefulness/evidence; preserve prior dated rarity unless reassessment requested
+/loot --auto            unattended lightweight capture; write only LOOT.md
+/loot assess --auto     unattended researched assessment; write only LOOT.md
 ```
 
 Or just say "loot this session" or "what from this is worth shipping?"
+`--auto` overrides shipping arguments and never asks, forges or publishes.
 
 ### End-of-session reminder (optional)
 
@@ -163,8 +211,8 @@ loot asks for capabilities, not specific tools, and always has a fallback.
 | Logo / cover image | your agent's image generation or an image MCP | hand-written SVG |
 | Secret scan | [gitleaks](https://github.com/gitleaks/gitleaks), including git history | bundled `scan.mjs` |
 | Demo video | [Remotion](https://www.remotion.dev) | screenshots + GIF |
-| "Does this exist?" | web search | marked "not checked", which caps it at Common |
-| Independent rating | a subagent that never sees your conversation | the strongest case for Common, written first |
+| "Does this exist?" (full assessment) | web search | assessed rarity is capped at Common; usefulness stays independent |
+| Independent rarity rating (full assessment) | a subagent that never sees your conversation | the strongest case for Common, written first |
 | Publish repo | `gh` CLI | the commands, printed for you |
 | Publish post | dev.to / Hashnode API (draft) with your existing token | a Markdown file |
 
@@ -187,12 +235,12 @@ use does the work with the tools it already has.
 
 ```
 skills/loot/
-  SKILL.md              scan → rate → forge → check → ship
+  SKILL.md              capture → usefulness; assess rarity → forge → check → ship when requested
   references/forge.md   checklists for repo, skill, post, gist, demo, name, logo
   references/ship.md    publish commands and fallbacks
   scripts/scan.mjs      secret scanner (node scan.mjs <folder>)
   scripts/transcript.mjs  reads past sessions (Claude Code, Codex, any text export), secrets redacted
-evals/                  12 rating cases + a scorer; the prompt is built from SKILL.md itself
+evals/                  rarity/usefulness cases + a scorer; prompt built from SKILL.md itself
 skills/skill-factory/
   SKILL.md              spec → tests first → independent review → release gate
   references/release-checklist.md  what the reviewer checks before anything ships
@@ -215,9 +263,10 @@ written for publication (session-to-post's slop-detector).
 
 ### Does the rating work?
 
-[`evals/`](evals/) holds 13 drops whose right rating is known, one taken
-from a real run. Fresh raters that never saw a session scored **13/13** with
-the current rules, agreed with each other on every item, and across all
+[`evals/`](evals/) holds the original 13 rarity fixtures, one taken
+from a real run, plus separate usefulness/historical-evidence cases.
+Under the earlier rarity-only rules, fresh raters scored **13/13**,
+agreed with each other on every item, and across all
 eight runs **never rated an item higher than its evidence supported**.
 Earlier misses were near-miss tags, not tiers, and each one led to a rule fix.
 
@@ -249,7 +298,8 @@ Found by running loot's own existence check on itself:
 - [learning-loop-skill](https://github.com/melodykoh/learning-loop-skill): captures learnings before the session ends.
 - [SpecStory](https://github.com/specstoryai/getspecstory): saves AI IDE and terminal agent histories for reuse.
 
-loot's differences: a rating step built to say no, a secret-scan and approval
+loot's differences: lightweight capture, separate usefulness and novelty
+ratings, a secret-scan and approval
 gate before anything goes public, and one pass that can produce a repo, skill,
 post or demo. The rating is tested on known cases, and loot was run side by
 side with ce-compound on real sessions (above); the other tools haven't been
@@ -264,8 +314,9 @@ compared yet.
   passwords in URLs), not a full audit. Install gitleaks for the real thing.
 - Ratings are still an LLM's judgment. The evidence rules, the checklist and
   the outside rater reduce flattery, and the evals show it holds on known
-  cases; 12 cases are not every case. Read the cited search results, not
-  the label.
+  cases; a finite fixture set is not every case. Read the context and cited
+  evidence, not just either label. Prior historical benchmarks describe the
+  older rules and have not been rerun as comparisons of this capture mode.
 
 ## License
 

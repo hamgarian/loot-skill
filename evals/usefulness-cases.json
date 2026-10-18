@@ -1,0 +1,44 @@
+[
+  {
+    "id": "equivalent-recurring-fix",
+    "evidence": "item: documented two-pass video encoding. query: smaller ffmpeg exports. search: the official wiki documents exactly the method. proof: recorded historical logs from two dated sessions show exports completing and smaller output files; logs inspected, not rerun. user context: this is the team's recurring weekly export, and both sessions first failed the upload size limit before applying the fix. edge: none. clean clone: not done.",
+    "expected": "COMMON",
+    "expectedUsefulness": "High",
+    "why": "Equivalent documented method stays Common, while repeated observed failures justify High usefulness. Historical records are legitimate evidence within their scope."
+  },
+  {
+    "id": "historical-recorded-proof",
+    "evidence": "item: a converter for a niche archive format. query: convert archive format Z to editable vector timeline. search: cited search log found three parsers, none produce editable vector timelines. proof: recorded historical command and output in release-test.log dated last month, inspected now: the converter processed three fixtures and the target application's validator accepted all three. Source revision and dependencies match the tested revision; no current revalidation claim. user context: the user has a concrete upcoming archive conversion task, but has not used this repeatedly. edge: not measured. clean clone: not done.",
+    "expected": "RARE",
+    "expectedUsefulness": "Medium",
+    "why": "Recorded historical execution counts as proof without a fresh rerun. No measured edge or clone, so plain Rare. One concrete likely reuse supports Medium."
+  },
+  {
+    "id": "reported-history-only",
+    "evidence": "item: a converter for a niche archive format. query: convert archive format Z to editable vector timeline. search: cited search log found three parsers, none produce editable vector timelines. proof: reported historical only: an earlier assistant summary says 'the conversion tests passed'; no underlying command, artifact or output was inspected. user context: a concrete upcoming archive conversion task, no repeated use. edge: not measured. clean clone: not done.",
+    "expected": "COMMON, near Rare",
+    "expectedUsefulness": "Medium",
+    "why": "An attributed uninspected summary can inform usefulness but does not establish verified execution. Only proof is missing for Rare."
+  },
+  {
+    "id": "novel-one-off",
+    "evidence": "item: one-off migration converter. query: convert retired format X to Y. search: cited search found no equivalent; two parsers only read X. proof: the output imported correctly in the target app, with the validation artifact inspected. user context: the only known source file has now been migrated, the retired system is gone, and no future reuse is expected. edge: not measured. clean clone: not done.",
+    "expected": "RARE",
+    "expectedUsefulness": "Low",
+    "why": "Public distinction and proof qualify for Rare; known one-off context means low personal carry-forward value."
+  },
+  {
+    "id": "missing-usefulness-context",
+    "evidence": "item: a small utility. query: not supplied. search: not checked. proof: absent, never run. user context: no intended workflow, reuse, costs or corrections supplied. edge: none. clean clone: not done.",
+    "expected": "COMMON",
+    "expectedUsefulness": "Unknown",
+    "why": "No novelty evidence means Common; no usefulness context means Unknown rather than automatically Low."
+  },
+  {
+    "id": "historical-complete-evidence",
+    "evidence": "item: faster archive validator. query: validate large format-Z archives quickly. search: named alternative validator-z exists. proof: inspected historical CI log from last month contains the same command on the same dataset, matching results, 2 seconds for this implementation versus 6 seconds for validator-z; raw timings and outputs retained. A clean-clone install and reproduction passed in that log at the recorded revision. The assessment is of that historical revision only, not a current-release validation. user context: repeated weekly archive validation; previous slow run caused recurring workflow delays. edge: measured against validator-z in the historical log.",
+    "expected": "EPIC",
+    "expectedUsefulness": "High",
+    "why": "All five rarity requirements are recorded with scope and revision; historical age alone does not invalidate them. Recurring observed delays justify High usefulness."
+  }
+]
