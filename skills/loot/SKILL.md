@@ -47,6 +47,13 @@ forms (repo + post + demo).
 | `/loot review` | re-rate what's already in `LOOT.md` (see step 6) |
 | `/loot --auto` | unattended: scan, rate, write `LOOT.md`, then stop. Never asks, forges, publishes, or edits any other file. For `claude -p "/loot --auto"` or a scheduled run |
 
+**`--auto`** runs steps 1 and 2 exactly as written, with the same searches and
+the same outside rater, because an unattended rating needs evidence most.
+Then it appends to `LOOT.md` in the current working directory and stops.
+`home:` suggestions are listed but not offered or written. If the session is
+already in `LOOT.md` and nothing new turned up, write one `seen again` line,
+not a second table.
+
 ## 1. Scan
 
 Read the whole conversation and the files it touched. For a past session, or
@@ -95,6 +102,9 @@ checklist items 1–5 are met, then give the rating those imply. For any item
 one requirement short of the next tier, name the cheapest evidence that would
 raise it." If you
 can't, write the strongest case that each item is Common before rating it.
+If the subagent fails to start (for example a model error), retry once with
+another model before falling back, and say in the table header which rater
+was used.
 
 | Rarity | Needs all of | Forms |
 |---|---|---|
@@ -124,9 +134,10 @@ Hard rules:
   tier is labelled `[COMMON, near Rare]` or `[RARE, near Epic]` and gets a
   `next:` line: the cheapest evidence that would raise it, and roughly how
   long it takes. That turns a "no" into a to-do the user can choose. It's
-  only a near miss if that evidence could plausibly exist: a documented
-  trick, or a copy of a tool that already does more, has no edge to measure
-  and stays plain Common.
+  only a near miss if that evidence could plausibly exist. If the closest
+  result already does the same thing (official docs describing the same
+  fix, a standard setting, a tool that does it generically), it's plain
+  Common: timing your copy against the documented method is not an edge.
 - The author's opinion of the item is not evidence.
 - Expect nearly everything to be Common. If more than one item in a session
   rates above Common, say why this session is the exception.

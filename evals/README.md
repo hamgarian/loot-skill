@@ -33,12 +33,15 @@ Fresh Claude Sonnet raters, 2026-10-19:
 |---|---|---|---|---|
 | before the checklist | 3 | 10, 9, 10 of 12 | 0 | no (3 items split) |
 | with the 1–5 checklist and a `met` list | 2 | 11, 11 of 12 | 0 | yes, identical answers |
+| plus "the docs already do it = plain Common", 13th case from a real run | 2 | 13, 13 of 13 | 0 | yes, identical answers |
 
-Every miss was a near-miss tag (`near Rare`, `near Epic`), never the tier.
-The one remaining miss: `nothing-equivalent` was tagged `near Epic` although
-the rater's own `met` list showed two requirements missing. No run ever put an
-item in a higher tier than its evidence supported, which is the failure loot
-exists to prevent.
+Every miss along the way was a near-miss tag (`near Rare`, `near Epic`), never
+the tier. No run ever put an item in a higher tier than its evidence
+supported, which is the failure loot exists to prevent.
+
+The 13th case (`official-docs-fix`) comes from a real unattended run on a
+past session, where the rater tagged a fix "near Rare" although the tool's own
+docs describe it. The rule was tightened and the case added, so it stays fixed.
 
 Not measured yet: how loot compares with other tools on real sessions. That
 needs real past sessions scored by hand, and is the next step.
