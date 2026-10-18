@@ -103,6 +103,19 @@ canonical_url: <the first place it is published>
   "unlock", "seamless", "leverage", "Let's explore".
 - 600–1500 words. Every claim backed by something from the session.
 
+## Read cold
+
+Brief for the fresh reader (README, post, launch drafts):
+"You're a developer who has never heard of this. Read <file> once. List, with
+line numbers: (1) filler or hype that says nothing; (2) claims with no
+evidence in the text; (3) the same point made twice; (4) terms a newcomer
+wouldn't know; (5) where you got lost or would stop reading; (6) anything
+that reads like an ad, not like a person. Quote, don't rewrite. Say 'none'
+for a clean category."
+
+Fix every flag or say why not. One round is usually enough; a second round
+only if the first found more than five.
+
 ## Gist
 
 One file, a comment header saying what it does and how to run it, and a
@@ -114,7 +127,7 @@ Only for Epic items. 10–30 seconds, no voice, captions on screen:
 the problem (2s), the command or action (3–5s), the result (rest). Loop-friendly
 ending. See `ship.md` for the Remotion recipe.
 
-## Launch posts (Epic)
+## Launch posts (Epic, or Rare on request)
 
 Drafts in `launch/`, never posted by you:
 
