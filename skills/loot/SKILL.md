@@ -58,7 +58,7 @@ or edit any file except `LOOT.md`. Default capture uses steps 1 and 2a only;
 explicit `assess` also uses step 2b with searches and an outside rater.
 Use the project's root for `LOOT.md` when known, otherwise the current
 working directory, consistently across all modes. Append and stop.
-`home:` suggestions are listed but not offered or written. If the session is
+`home:` drafts stay inside `LOOT.md`; never offer or write them. If the session is
 already in `LOOT.md` and nothing new turned up, write one `seen again` line,
 not a second table.
 
@@ -107,6 +107,8 @@ usefulness automatically. Rate separately even when one axis is Unknown.
 
 In capture mode, keep each entry short: finding, usefulness + reason,
 evidence source/limits, and an existing or proposed `home:` when helpful.
+For each **High** or **Medium** drop with a `home:`, also write the `draft:` described
+under "A better home".
 For historical evidence, name the inspected source and date when known;
 mark missing metadata unknown, state that it was not rerun, and bound the
 claim to what that record demonstrates. Session discovery (`--list`) does
@@ -143,16 +145,30 @@ if missing), dated. A drop earns a full entry only if a future session would
 go wrong, or redo real work, without it. Otherwise it's a one-line "noted"
 entry. The journal is only useful if it stays readable.
 
+Leave out, even from "noted": one-time inventories (folder sizes, lists of
+what was found), standard advice the session didn't test, steps the user
+just asked for and got, and anything another entry already covers. A
+"noted" line has to name something a future session would do differently.
+
 - **Seen it before?** Search `LOOT.md` for the same root idea first. If it's
   there, write `seen again (first: <date> #<n>)` plus only what's new, instead
   of a second full entry. Repeat sightings are evidence for `/loot review`.
 - **A better home.** `LOOT.md` is the fallback, not always the best place. For
   each useful drop, add `home:` when a narrower place would do more good:
-  a rule the agent keeps breaking → `CLAUDE.md` / `AGENTS.md`; an invariant →
+  a rule the agent keeps breaking → the agent's instruction file
+  (`AGENTS.md`, `CLAUDE.md`, or whatever this agent reads); an invariant →
   a test; the reason behind odd code → a comment next to it; why a change was
-  made → the commit message. In capture, list the suggestion and stop. During
-  an action-oriented follow-up, offer to write it and do so only with the
-  user's authorization for that item. These stay local; nothing is published.
+  made → the commit message. Name the exact file (and section or function)
+  when the session shows it.
+- **Draft it.** For High and Medium drops with a `home:` that doesn't
+  already hold the lesson (a user correction always gets one), put the ready-to-paste text
+  under the entry in `LOOT.md` as `draft:` in a fenced block: the rule
+  (a trigger plus what to do, in a few lines), the test, the comment, or a
+  small diff. Use only facts from the session; if the home file's contents
+  are unknown, write an append, not a diff. Capture and `--auto` write the
+  draft only in `LOOT.md`. During an action-oriented follow-up, offer the
+  drafts and apply each one only with the user's yes for that item. These
+  stay local; nothing is published.
 
 ## 3. Forge
 
