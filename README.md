@@ -2,7 +2,7 @@
 <h1 align="center">loot</h1>
 <p align="center"><b>Every AI session drops loot. <code>/loot</code> finds it, polishes it, ships it.</b></p>
 
-<p align="center"><img src="assets/demo.gif" width="720" alt="loot scanning a session, rating all four drops Common, and saving them to LOOT.md"></p>
+<p align="center"><img src="assets/demo.gif" width="720" alt="loot capturing a session: four drops rated by usefulness and saved to LOOT.md, rarity left for /loot assess"></p>
 
 An AI session can produce working code, a useful fix, a decision, or corrections
 that improve the next attempt. Loot helps preserve those results beyond the chat.
@@ -53,6 +53,11 @@ when relevant, and name whose workflow the usefulness judgment concerns.
 record evidence and its limits, save `LOOT.md`, and stop. They do not run web
 searches, call a separate rater, rerun tests or ask what to publish. Rarity
 stays **Not assessed**, or retains a dated previous assessment.
+
+Without an outside rater, the agent that helped build the work is the one
+rating it, so capture is strict about **High**: it needs a quote or a count
+from the session (the repeated use, the correction, the observed cost), and
+more than two Highs in one session must be explained. Otherwise it's Medium.
 
 ### Assess rarity when needed
 

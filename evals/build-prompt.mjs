@@ -6,9 +6,10 @@ import { pathToFileURL } from 'node:url';
 
 const here = (p) => new URL(p, import.meta.url);
 
-export function raterSection(skill = readFileSync(here('../skills/loot/SKILL.md'), 'utf8')) {
+// The rarity rules live in references/assess.md (loaded only for /loot assess); usefulness stays in SKILL.md.
+export function raterSection(skill = readFileSync(here('../skills/loot/references/assess.md'), 'utf8')) {
   const m = skill.match(/<!-- rater:start[^>]*-->([\s\S]*?)<!-- rater:end -->/);
-  if (!m) throw new Error('SKILL.md has no rater:start/rater:end section');
+  if (!m) throw new Error('references/assess.md has no rater:start/rater:end section');
   return m[1].trim();
 }
 

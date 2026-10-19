@@ -45,6 +45,25 @@ supported. A missing usefulness answer is not silently scored as Low.
 
 ## Results
 
+### 1.6.1 live capture test: is High inflated?
+
+Capture has no outside rater, so the agent that helped build the work rates its
+usefulness. To check for flattery, plain `/loot --auto` (capture) ran on two of
+the [head-to-head](head-to-head.md) sessions, and a separate judge compared each
+usefulness label with the importance the independent gold list gave the same
+finding:
+
+| | Entries | Same as gold | Rated lower | Rated higher | High without real evidence |
+|---|---|---|---|---|---|
+| storage cleanup + Reddit scraper build | 13 | 5 | 4 | 3 | 0 |
+
+Usefulness came out **slightly deflated, not inflated**. Every High quoted
+something that is in the session; the lower ratings were mostly public-facing
+findings (Reddit's access changes, a benchmark) that capture rates by value
+to the user's own workflow and merged into one entry. Each run took under a
+minute with no search or subagent, versus 6–10 minutes for a full assessment.
+Two sessions, one run each.
+
 ### 1.6.0 usefulness and historical-evidence evaluation
 
 One fresh agent, given the generated prompt without expected answers, scored
