@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.1 — 2026-10-19
+
+- Move the rarity assessment (evidence, outside rater, checklist) into `references/assess.md`, loaded only for `/loot assess` and publishing. `SKILL.md` drops from 342 to under 260 lines, so the default capture reads less. The evals now build their rarity prompt from that file.
+- Capture is strict about High usefulness, since no outside rater checks it: High needs a quote or count from the session, and more than two Highs in a session must be explained.
+- A Common item chosen for publication ships as a guide: no "new/first/only" claims, closest alternatives linked, and the manifest says so.
+- Restore `argument-hint` as a top-level frontmatter field so Claude Code shows the `/loot` hint.
+- Re-render the demo to show capture mode: usefulness ratings, rarity left for `/loot assess`.
+
 ## 1.6.0 — 2026-10-19
 
 - Make `/loot` a lightweight capture pass; `/loot capture` explicitly selects it and `/loot assess` opts into researched rarity and independent review.

@@ -3,16 +3,17 @@ import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } fr
 
 export const GOLD = '#F2B705';
 export const RARITY = { COMMON: '#9DA5B4', RARE: '#4C9AFF', EPIC: '#B474FF' } as const;
-type Rarity = keyof typeof RARITY;
 
 // The drops loot found in the session that built it, re-rated under the evidence rules.
-const DROPS: { rarity: Rarity; name: string; what: string; forms: string }[] = [
-  { rarity: 'COMMON', name: 'loot-skill', what: '6 similar tools, edge unmeasured', forms: 'LOOT.md' },
-  { rarity: 'COMMON', name: 'scan.mjs', what: 'gitleaks does far more', forms: 'LOOT.md' },
-  { rarity: 'COMMON', name: 'naming story', what: 'only interesting to us', forms: 'LOOT.md' },
-  { rarity: 'COMMON', name: 'preview server', what: 'throwaway', forms: 'LOOT.md' },
+// Default capture rates usefulness only; rarity waits for /loot assess.
+const USEFUL = { HIGH: GOLD, MEDIUM: '#4C9AFF', LOW: '#9DA5B4' } as const;
+const DROPS: { rarity: keyof typeof USEFUL; name: string; what: string; forms: string }[] = [
+  { rarity: 'HIGH', name: 'loot-skill', what: 'run on 4 real sessions', forms: 'LOOT.md' },
+  { rarity: 'MEDIUM', name: 'scan.mjs', what: 'runs before every publish', forms: 'LOOT.md' },
+  { rarity: 'LOW', name: 'naming story', what: 'one-off', forms: 'LOOT.md' },
+  { rarity: 'LOW', name: 'preview server', what: 'throwaway', forms: 'LOOT.md' },
 ];
-const DONE = ['4 drops saved to LOOT.md', 'evidence cited for every rating'];
+const DONE = ['4 drops saved to LOOT.md', 'no web search, no outside rater'];
 
 const mono: CSSProperties = { fontFamily: 'Consolas, "JetBrains Mono", Menlo, monospace', fontSize: 20, lineHeight: 1.55 };
 
@@ -87,7 +88,7 @@ export const Loot = () => {
             <Typed text="/loot" at={10} frame={frame} />
           </div>
           <Line at={40} frame={frame}>
-            <span style={{ color: '#7d8590' }}>scanning session… searching for what already exists…</span>
+            <span style={{ color: '#7d8590' }}>reading session… rating usefulness…</span>
           </Line>
           <Line at={70} frame={frame}>
             <b>LOOT: {DROPS.length} drops</b>
@@ -101,10 +102,10 @@ export const Loot = () => {
                   style={{
                     display: 'inline-block',
                     width: 140,
-                    color: RARITY[d.rarity],
+                    color: USEFUL[d.rarity],
                     transform: `scale(${0.6 + 0.4 * pop})`,
                     transformOrigin: 'left center',
-                    textShadow: d.rarity === 'COMMON' ? 'none' : `0 0 12px ${RARITY[d.rarity]}88`,
+                    textShadow: d.rarity === 'LOW' ? 'none' : `0 0 12px ${USEFUL[d.rarity]}88`,
                   }}
                 >
                   [{d.rarity}]
@@ -116,7 +117,7 @@ export const Loot = () => {
             );
           })}
           <div style={{ marginTop: 8, opacity: fadeIn(frame, VERDICT) }}>
-            Nothing above Common. <span style={{ color: GOLD }}>Nothing to ship.</span>
+            Rarity not assessed. <span style={{ color: GOLD }}>/loot assess</span> to research it.
           </div>
           {DONE.map((s, i) => (
             <Line key={s} at={SAVED + i * 16} frame={frame}>
