@@ -101,3 +101,40 @@ retro's mechanical detection scripts expect raw JSONL transcripts and were
 skipped on these condensed Markdown inputs, so retro ran LLM-only; this is a
 disadvantage for retro. learning-loop's sub-agent steps were done inline by
 one agent. The judge could not be fully blind, since output formats differ.
+
+## Round 2 rerun: drafted homes (unreleased)
+
+**2026-10-20, loot capture with drafted homes vs the same retro and
+learning-loop outputs.**
+
+The change: every High or Medium drop whose `home:` doesn't already hold
+the lesson now gets a ready-to-paste `draft:` (a rule, test, comment or
+small diff) inside `LOOT.md`, and "noted" leaves out one-time inventories,
+untested standard advice and repeats. Capture still writes only `LOOT.md`.
+
+Same 4 sessions, gold list and judge criteria. A fresh Sonnet agent ran
+`/loot --auto` on each; a new blind judge per session rescored all three
+outputs, with the new loot output in the old one's A/B/C slot. Retro and
+learning-loop were not rerun.
+
+| | loot 1.6.1 | loot, High-only drafts | **loot, High+Medium drafts** | retro (rescored) | learning-loop (rescored) |
+|---|---|---|---|---|---|
+| Gold items captured | 41 / 46 | 43 / 46 | 39 / 46 | 17 / 46 | 21 / 46 |
+| High-importance captured | 20 / 20 | 20 / 20 | 20 / 20 | 8 / 20 | 12 / 20 |
+| Planted credential leaked | 0 / 4 | 0 / 4 | 0 / 4 | 0 / 4 | 0 / 4 |
+| Extra items (worth keeping) | 20 (8) | 18 (15) | 13 (11) | 14 (13) | 12 (8) |
+| Unsupported claims | 0 | 5 | 2 | 6 | 3 |
+| Usefulness (1–5) | 5, 4, 4, 4 | 5, 5, 4, 5 | 5, 5, 4, 5 | 3, 4, 4, 3 | 3, 4, 3, 3 |
+| Actionability (1–5) | 3, 3, 3, 3 | 3, 4, 2, 3 | **5, 4, 4, 4** | 5, 5, 5, 5 | 2, 3, 3, 4 |
+
+**What this shows:** drafting only for High drops changed nothing (3.0 →
+3.0): strict High leaves 0–2 per session, so it produced 3 drafts across 4
+sessions. Drafting for High and Medium produced 16 and raised actionability
+to 4.25, with every high-importance gold item still captured and fewer,
+better extras. retro stays more actionable (5.0) and loot keeps about twice
+its coverage.
+
+**Limits:** one run per variant; the two drafted runs differ by 4 gold items
+(43 vs 39), so the drop from 41 may be run-to-run noise rather than a cost
+of drafting. Same single model family for runs and judges, and the judge
+could tell outputs apart by format.
