@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.7.0 — 2026-10-20
 
 - Capture drafts the fix: each High or Medium drop whose `home:` doesn't already hold the lesson gets a ready-to-paste `draft:` (rule, test, comment or small diff) in `LOOT.md`. Capture and `--auto` still write only `LOOT.md`; a follow-up applies a draft only with the user's yes. In a rerun of head-to-head round 2, actionability rose from 3.0 to 4.25 with 20/20 high-importance items kept.
 - "noted" leaves out one-time inventories, untested standard advice, delivered steps and repeats.
