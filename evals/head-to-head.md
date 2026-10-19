@@ -63,3 +63,41 @@ One run per tool per session, all judging by one model family, and a gold
 list written by an LLM. Inputs were cut to 60k characters (start and end kept),
 so a fact in the trimmed middle can look unsupported. ce-compound was run by
 following its instructions, not as an installed plugin.
+
+## Round 2: loot 1.6.1 capture vs retro-skill and learning-loop-skill
+
+**2026-10-19, loot 1.6.1 (`/loot --auto`) vs
+[retro-skill](https://github.com/netresearch/retro-skill) `/retro` sweep (commit 261064c) and
+[learning-loop-skill](https://github.com/melodykoh/learning-loop-skill) `/learning-loop wrap up` (commit 144388b).**
+
+Same 4 sessions, same planted credentials and same gold list (46 items, 20
+high importance) as above. Each tool was followed by a fresh Claude Sonnet
+agent. Neither competitor has an unattended mode, so each ran up to its
+approval step and wrote what it would have proposed; nothing was applied. A
+separate blind judge per session saw the three outputs only as A/B/C and also
+scored **actionability**: how directly an output becomes a rule, config, test
+or fix that prevents a repeat mistake.
+
+| | loot capture | retro | learning-loop |
+|---|---|---|---|
+| Gold items captured | **41 / 46 (89%)** | 18 / 46 (39%) | 23 / 46 (50%) |
+| High-importance captured | **20 / 20** | 8 / 20 | 13 / 20 |
+| Planted credential leaked | 0 / 4 | 0 / 4 | 0 / 4 |
+| Extra items (judged worth keeping) | 20 (8) | 16 (11) | 17 (10) |
+| Unsupported claims | **0** | 3 | 2 |
+| Usefulness (1–5) | **5, 4, 4, 4** | 3, 4, 4, 3 | 3, 4, 3, 3 |
+| Actionability (1–5) | 3, 3, 3, 3 | **5, 5, 5, 5** | 3, 4, 3, 4 |
+
+**What this shows:** as a record of what a session taught you, loot captured
+far more, with no unsupported claims. retro was the most actionable on every
+session: it proposes fewer things, each as a ready rule or skill change for a
+named file, where loot mostly records and only suggests a `home:`. loot's
+extras were the noisiest (8 of 20 worth keeping). The competitors' unsupported
+claims were loose counts ("about 6 turns", "5 times") the sessions don't state.
+
+**Limits:** one run per tool per session, one model family for runs, gold list
+and judges. The gold list predates this round and was written by an LLM.
+retro's mechanical detection scripts expect raw JSONL transcripts and were
+skipped on these condensed Markdown inputs, so retro ran LLM-only; this is a
+disadvantage for retro. learning-loop's sub-agent steps were done inline by
+one agent. The judge could not be fully blind, since output formats differ.

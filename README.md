@@ -331,8 +331,10 @@ loot's differences: lightweight capture, separate usefulness and novelty
 ratings, a secret-scan and approval
 gate before anything goes public, and one pass that can produce a repo, skill,
 post or demo. The rating is tested on known cases, and loot was run side by
-side with ce-compound on real sessions (above); the other tools haven't been
-compared yet.
+side with ce-compound, retro-skill and learning-loop-skill on real sessions
+([head-to-head](evals/head-to-head.md)): loot recorded the most (41 of 46 gold
+items), while retro turned what it found into ready-to-apply rules most
+directly. The other tools haven't been compared yet.
 
 ## Limits
 
